@@ -1,6 +1,6 @@
-# DSCI-522-Group-17
+# DSCI 522 Group 17
 
-Authors:
+AUTHORS:
 
 TSANG	JENNIFER	
 
