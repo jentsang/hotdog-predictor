@@ -6,4 +6,3 @@ dependencies:
   - scikit-learn
   - pandas
   - jupyterlab
-prefix: C:\Users\hpala\miniforge3\envs\dsci522proj
