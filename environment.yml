@@ -1,0 +1,9 @@
+name: dsci522proj
+channels:
+  - conda-forge
+dependencies:
+  - conda-lock
+  - scikit-learn
+  - pandas
+  - jupyterlab
+prefix: C:\Users\hpala\miniforge3\envs\dsci522proj
