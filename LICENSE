@@ -1,21 +1,62 @@
+# License for Code (MIT)
+========================
+
+Code refers to all source code in this repository, including the analysis
+notebook(s) in the `notebooks/` folder and any other script files (e.g.,
+`.py`, `.R`, `.ipynb`, `.qmd`) that may be added.
+
 MIT License
 
-Copyright (c) 2025 Jennifer Tsang
+Copyright (c) 2025 TSANG JENNIFER, TSEGAY SAMRAWIT MEZGEBO,
+ASLAM ZAKI, PALAFOX PRIETO HECTOR
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+The above copyright notice and this permission notice (including the next
+paragraph) shall be included in all copies or substantial portions of the
+Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+# License for Reports and Documentation (CC BY-NC-ND 4.0)
+=========================================================
+
+Documentation refers to the main project report and other written explanatory text.
+
+All written content in this project, including the main report, figures,
+captions, and explanatory text is licensed under the **Creative Commons
+Attribution–NonCommercial–NoDerivatives 4.0 International (CC BY-NC-ND 4.0)**
+license.
+
+In summary:
+- You may share the report with proper credit.
+- You may not use it for commercial purposes.
+- You may not distribute modified versions of the report.
+
+Full terms: https://creativecommons.org/licenses/by-nc-nd/4.0/
+
+# Data License
+=============
+
+This project uses the **“Food Vendors”** dataset from the **City of Vancouver
+Open Data Portal**:
+
+- Dataset: Food Vendors  
+- URL: https://opendata.vancouver.ca/explore/dataset/food-vendors/table/
+
+The data is published under the **Open Government Licence – Vancouver**.
+See: https://opendata.vancouver.ca/pages/licence/
+
+Please attribute the City of Vancouver as the data provider when re-using or
+sharing any results based on this dataset.
+
