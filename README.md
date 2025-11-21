@@ -1,99 +1,110 @@
-# DSCI 522 Group 17 – Food Vendors in Vancouver: Hot Dog or Not?
+# Food Vendors in Vancouver: Hot Dog or Not?
 
-## Authors
+author: TSANG JENNIFER, TSEGAY SAMRAWIT MEZGEBO, ASLAM ZAKI, PALAFOX PRIETO HECTOR  
 
-- TSANG JENNIFER  
-- TSEGAY SAMRAWIT MEZGEBO  
-- ASLAM ZAKI  
-- PALAFOX PRIETO HECTOR  
+Demo of a data analysis project for DSCI 522 (Data Science Workflows), a course in the Master of Data Science program at the University of British Columbia.
 
-## Project overview
+## About
 
-In this project, we use the City of Vancouver “Food Vendors” open dataset to study where different kinds of food vendors operate in Vancouver.
+In this project, we use the City of Vancouver “Food Vendors” open dataset to explore where different kinds of food vendors operate in Vancouver and whether we can automatically identify hot-dog vendors.
 
-Our main question is:
+Our main research question is:
 
-> Can we predict whether a food vendor is a hot-dog vendor or not using its location and related attributes?
+> Can we predict whether a food vendor is a hot-dog vendor or not?
 
-We create a binary target variable that labels each vendor as “hot-dog vendor” or “not hot-dog vendor” based on the description field. We then use information such as location and other available variables to build and evaluate a binary classification model.
+For Milestone 1, we are primarily using the **business name** of each vendor to decide whether they are a hot-dog vendor or not, and we encode this as a binary target variable (“hot-dog vendor” vs “not hot-dog vendor”). As the project develops, we may also incorporate other attributes as features if they improve the model and remain easy to interpret.
 
-The project focuses on:
+The purpose of this project is to:
 
-- working with open data in a reproducible way  
-- performing a basic binary classification task  
-- documenting the workflow so others can re-run the analysis  
+- practice building and evaluating a simple binary classifier on real open data,  
+- work with text fields (business names) to construct a meaningful target variable,  
+- follow a clear and reproducible workflow that other users can re-run.
+
+Once the analysis is complete, we will update this section with a brief summary of the final model performance and main findings.
 
 ## Data
+
+The data set used in this project is the **“Food Vendors”** dataset from the City of Vancouver Open Data Portal:
 
 - Dataset: Food Vendors  
 - Provider: City of Vancouver Open Data Portal  
 - URL: https://opendata.vancouver.ca/explore/dataset/food-vendors/table/  
 
-The dataset contains information about food vendors on Vancouver streets, including their locations and descriptions. We download the data and save it in the `data/` directory.
+Each row in the dataset represents a food vendor and includes information such as the business name, description, and location. In this project, we use the business name to derive a binary label indicating whether the vendor appears to be a hot-dog vendor, and we plan to explore how this relates to other available variables.
 
-The data is published under the Open Government Licence – Vancouver.  
+The data is published under the **Open Government Licence – Vancouver**.  
 For details, see: https://opendata.vancouver.ca/pages/licence/
-
-In this project, we also create a derived variable indicating whether a vendor appears to be a hot-dog vendor based on the description.
 
 ## Repository structure
 
-For Milestone 1, the repository is organized as follows:
+For Milestone 1, the repository includes the following:
 
-- `README.md` – project overview and instructions.  
-- `LICENSE` – licenses for the code, report, and data.  
-- `environment.yml` – conda environment file listing the main dependencies.  
-- `notebooks/` – contains the main analysis notebook(s), e.g. `notebooks/dog_or_not.ipynb`.  
-- `data/` – folder for the Food Vendors dataset and any derived data files.  
+- `README.md` – project overview and instructions  
+- `CODE_OF_CONDUCT.md` – project code of conduct  
+- `CONTRIBUTING.md` – guidelines for contributing to the project  
+- `data/` – folder for the Food Vendors dataset and any derived data files  
+- `notebooks/dog_or_not.ipynb` – main analysis notebook  
+- `environment.yml` – base conda environment specification  
+- `conda-*.lock` – conda lock files for major operating systems (e.g. `conda-linux-64.lock`, `conda-osx-64.lock`, `conda-win-64.lock`)  
+- `LICENSE` – licenses for the code, report, and data  
 
-Additional folders and files (such as `src/`, `reports`, and a `Makefile`) may be added in later milestones.
+## Report
 
-## How to run the analysis
+For Milestone 1, the main analysis is contained in the notebook:
 
-These steps assume that conda is installed.
+- `notebooks/dog_or_not.ipynb`
 
-1. Clone the repository and move into the project directory:
+In later milestones, we may render this analysis to an HTML or PDF report and link it here.
 
-   git clone https://github.com/jentsang/DSCI-522-Group-17.git  
-   cd DSCI-522-Group-17
+## Usage
 
-2. Create the conda environment using the provided `environment.yml`:
+From the root of this repository, the analysis can be run as follows (assuming `conda` is installed).
 
-   conda env create -f environment.yml
+First time setup (recommended, using an OS-specific conda lock file):
 
-3. Activate the environment:
+    git clone https://github.com/jentsang/DSCI-522-Group-17.git
+    cd DSCI-522-Group-17
 
-   conda activate dsci522proj
+    # Choose the lock file that matches your operating system and run ONE of:
+    conda-lock install --name dsci522proj conda-linux-64.lock   # Linux
+    conda-lock install --name dsci522proj conda-osx-64.lock     # macOS (Intel)
+    conda-lock install --name dsci522proj conda-win-64.lock     # Windows
 
-4. Start JupyterLab:
+    conda activate dsci522proj
 
-   jupyter lab
+Alternatively, you can create the environment directly from `environment.yml`:
 
-5. Run the analysis notebook:
+    conda env create -f environment.yml
+    conda activate dsci522proj
 
-   In JupyterLab, open `notebooks/dog_or_not.ipynb` and run the cells in order to reproduce the analysis.
+To run the analysis:
+
+    jupyter lab
+
+Then, in JupyterLab, open `notebooks/dog_or_not.ipynb` and run the cells in order to reproduce the analysis.
 
 If the project is later converted to a Quarto document, the analysis can be rendered with:
 
-   quarto render path/to/analysis.qmd
+    quarto render path/to/analysis.qmd
 
 ## Dependencies
 
 The main dependencies needed to run the analysis are:
 
+- Python 3.11  
+- conda  
 - conda-lock  
+- jupyterlab  
 - scikit-learn  
 - pandas  
-- jupyterlab  
+- plus any additional packages listed in `environment.yml`
 
-These packages are specified in the `environment.yml` file under the `dsci522proj` conda environment. For the full and up-to-date list of packages and versions, please see `environment.yml` and any conda lock files associated with this project.
+The `environment.yml` file defines the base environment, and the OS-specific conda lock files (`conda-linux-64.lock`, `conda-osx-64.lock`, `conda-win-64.lock`) pin exact package versions for reproducibility across different systems.
 
-## Licenses
+## License
 
-This project uses different licenses for the code, the report, and the data:
+The written report and documentation contained in this repository are licensed under the **Creative Commons Attribution–NonCommercial–NoDerivatives 4.0 International (CC BY-NC-ND 4.0)** license. See the `LICENSE` file for more information. If re-using or re-mixing the report, please provide attribution and a link to this repository.
 
-- Code: licensed under the MIT License.  
-- Reports and written documentation: licensed under the Creative Commons Attribution–NonCommercial–NoDerivatives 4.0 International (CC BY-NC-ND 4.0) license.  
-- Data: the Food Vendors dataset is provided by the City of Vancouver under the Open Government Licence – Vancouver.
+The software code contained within this repository is licensed under the **MIT License**. See the `LICENSE` file for more information.
 
-For full details, see the `LICENSE` file in this repository.
+The Food Vendors dataset is provided by the City of Vancouver under the **Open Government Licence – Vancouver**. See the City of Vancouver open data licence page for details.
