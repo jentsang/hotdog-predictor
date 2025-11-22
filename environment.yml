@@ -2,6 +2,7 @@ name: dsci522proj
 channels:
   - conda-forge
 dependencies:
+  - python=3.11
   - conda-lock
   - scikit-learn
   - pandas
