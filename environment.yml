@@ -3,10 +3,11 @@ channels:
   - conda-forge
 dependencies:
   - python=3.11
-  - conda-lock
-  - scikit-learn
-  - pandas
-  - jupyterlab
-  - altair
-pip:
-  - mglearn
+  - conda-lock=3.0.4
+  - scikit-learn=1.7.2
+  - pandas=2.3.3
+  - jupyterlab=4.4.10
+  - altair=6.0.0
+  - pip=25.3
+  - pip:
+    - mglearn==0.2.0
