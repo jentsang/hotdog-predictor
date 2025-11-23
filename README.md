@@ -53,9 +53,9 @@ For Milestone 1, the repository includes the following:
 ## Report
 
 For Milestone 1, the main analysis and report are contained in:
-- source notebook: `notebooks/dog_or_not.ipynb`
-- rendered HTML report: `notebooks/dog_or_not.html`
--  rendered HTML report: `notebooks/dog_or_not.pdf`
+- source notebook: [`notebooks/dog_or_not.ipynb`](notebooks/dog_or_not.ipynb)
+- rendered HTML report: [`notebooks/dog_or_not.html`](notebooks/dog_or_not.html)
+- rendered PDF report: [`notebooks/dog_or_not.pdf`](notebooks/dog_or_not.pdf)
 
 ## Usage
 
