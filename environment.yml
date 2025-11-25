@@ -9,5 +9,6 @@ dependencies:
   - jupyterlab=4.4.10
   - altair=6.0.0
   - pip=25.3
+  - pandera=0.26.1
   - pip:
     - mglearn==0.2.0
