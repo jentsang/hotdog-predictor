@@ -22,6 +22,8 @@ The purpose of this project is to:
 
 In Milestone 1 we compare several models (Dummy, Decision Tree, Logistic Regression, and Naïve Bayes) and find that a tuned Naïve Bayes classifier performs best, achieving a test accuracy of about 0.79 with very few false positives.
 
+In Milestone 2 we added data validation for the column and file names, as well as checking for the data types in our columns. Additionally, we created a Docker image for this project to be run in any device with the same environment and libraries as we have.
+
 ## Data
 
 The data set used in this project is the **“Food Vendors”** dataset from the City of Vancouver Open Data Portal:
@@ -59,6 +61,8 @@ For Milestone 1, the main analysis and report are contained in:
 
 ## Usage
 
+### Working locally
+
 From the root of this repository, the analysis can be run as follows (assuming `conda` is installed).
 
 First time setup (recommended, using conda-lock.yml):
@@ -75,9 +79,41 @@ Alternatively, you can create the environment directly from `environment.yml`:
     conda env create -f environment.yml
     conda activate dsci522proj
 
-To run the analysis:
+### Using Docker
 
-    jupyter lab
+If you want to run the docker image of this repo, you can instead just open `Docker Desktop`, and then in a terminal run:
+
+```
+docker pull jentsang/hotdog-predictor
+```
+
+And once the image is pulled, you can execute:
+
+```
+docker run --rm -it -p 8888:8888 \
+  jentsang/hotdog-predictor \
+  start-notebook.sh --NotebookApp.token='' --NotebookApp.password=''
+```
+
+Alternatively, you can also use the `docker-compose.yml` file available in the root by running:
+
+```
+docker-compose up
+```
+
+(Do not forget to close the container by using `Ctrl+C` and typing `docker-compose rm` into the terminal)
+
+To run the analysis you can just type:
+
+```http://localhost:8888/```
+
+In your browser (make sure there are no other instances of jupyterlab open)
+
+Or if you installed and executed the environment execute `jupyter lab` in the terminal by typing:
+
+```
+jupyter lab
+```
 
 Then, in JupyterLab, open `notebooks/dog_or_not.ipynb` and run the cells in order to reproduce the analysis.
 
@@ -94,7 +130,8 @@ The main dependencies needed to run the analysis (as specified in environment.ym
 - jupyterlab 4.4.10
 - altair 6.0.0
 - pip 25.3
-- mglearn 0.2.0
+- pip:
+    - mglearn 0.2.0
 
 For the complete and authoritative list of packages and versions, please see environment.yml and conda-lock.yml.
 

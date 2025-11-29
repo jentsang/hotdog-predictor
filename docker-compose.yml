@@ -1,0 +1,14 @@
+services:
+  hotdog_predictor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hotdog_predictor
+    container_name: hotdog_predictor
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./:/workspace
+    working_dir: /workspace
+    stdin_open: true
+    tty: true
