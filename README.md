@@ -90,12 +90,10 @@ docker pull jentsang/hotdog-predictor
 And once the image is pulled, you can execute:
 
 ```
-docker run --rm -it -p 8888:8888 \
-  jentsang/hotdog-predictor \
-  start-notebook.sh --NotebookApp.token='' --NotebookApp.password=''
+docker run --rm -it -p 8888:8888 jentsang/hotdog-predictor
 ```
 
-Alternatively, you can also use the `docker-compose.yml` file available in the root by running:
+Alternatively, you can also use the `docker-compose.yml` file available in the root of the repository by running:
 
 ```
 docker-compose up
