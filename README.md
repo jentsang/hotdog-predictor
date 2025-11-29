@@ -83,19 +83,19 @@ Alternatively, you can create the environment directly from `environment.yml`:
 
 If you want to run the docker image of this repo, you can instead just open `Docker Desktop`, and then in a terminal run:
 
-```
+```bash
 docker pull jentsang/hotdog-predictor
 ```
 
 And once the image is pulled, you can execute:
 
-```
+```bash
 docker run --rm -it -p 8888:8888 jentsang/hotdog-predictor
 ```
 
-Alternatively, you can also use the `docker-compose.yml` file available in the root of the repository by running:
+Or **IF you are running the repository on Intel x86**, you can also use the `docker-compose.yml` file available in the root of the repository by running:
 
-```
+```bash
 docker-compose up
 ```
 
@@ -109,7 +109,7 @@ In your browser (make sure there are no other instances of jupyterlab open)
 
 Or if you installed and executed the environment execute `jupyter lab` in the terminal by typing:
 
-```
+```bash
 jupyter lab
 ```
 
