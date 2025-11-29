@@ -18,6 +18,6 @@ Small typos or grammatical errors in documentation may be edited directly using 
 - This project is released with a Contributor Code of Conduct (located in the repo). By participating in this project you agree to abide by its terms.
 
 ## Attribution
-These contributing guidelines were adapted from the [dplyr contributing guidelines](https://github.com/tidyverse/dplyr/blob/main/.github/CONTRIBUTING.md) as well as Tiffany Timbers ["Contributing to the Breast Cancer Predictor project"](https://github.com/ttimbers/breast-cancer-predictor/blob/0.0.1/CONTRIBUTING.md) file.
+These contributing guidelines were adapted from the [dplyr contributing guidelines](https://github.com/tidyverse/dplyr/blob/main/.github/CONTRIBUTING.md) as well as Tiffany Timbers ["Contributing to the Breast Cancer Predictor project"](https://github.com/ttimbers/breast-cancer-predictor/blob/0.0.1/CONTRIBUTING.md) file, and Daniel Chen ["docker-condalock-jupyterlab"](https://github.com/chendaniely/docker-condalock-jupyterlab/blob/main/.github/workflows/docker-build.yml).
 
 
