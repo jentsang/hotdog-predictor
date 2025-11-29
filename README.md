@@ -81,7 +81,7 @@ Alternatively, you can create the environment directly from `environment.yml`:
 
 ### Using Docker
 
-If you want to run the docker image of this repo, you can instead just run:
+If you want to run the docker image of this repo, you can instead just open `Docker Desktop`, and then in a terminal run:
 
 ```
 docker pull jentsang/hotdog-predictor
