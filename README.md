@@ -61,7 +61,7 @@ For Milestone 1, the main analysis and report are contained in:
 
 ## Usage
 
-### Working offline
+### Working locally
 
 From the root of this repository, the analysis can be run as follows (assuming `conda` is installed).
 
