@@ -109,7 +109,7 @@ To run the analysis you can just type:
 
 In your browser (make sure there are no other instances of jupyterlab open)
 
-Or if you installed and executed the environment execute
+Or if you installed and executed the environment execute `jupyter lab` in the terminal by typing:
 
 ```
 jupyter lab
