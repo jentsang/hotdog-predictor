@@ -11,5 +11,7 @@ dependencies:
   - matplotlib=3.10.7
   - pip=25.3
   - pandera=0.26.1
+  - click=8.3.1
+  - quarto=1.8.26
   - pip:
     - mglearn==0.2.0
