@@ -24,6 +24,7 @@ import pandas as pd
 from IPython.display import Markdown, display
 from tabulate import tabulate
 import pickle
+import json
 ```
 
 ```{python}
@@ -173,6 +174,8 @@ Markdown(nb_table.to_markdown(index = False))
 
 ![Confusion matrix for the Naïve-Bayes classifier.](../results/figures/NaiveBayes/train_confusion_matrix.png){#fig-nb-cm width="80%"}
 
+![Test image](../results/figures/dummy_images.png){#fig-nb-cm width="80%"}
+
 ```{python}
 #| label: tbl-nb-mismatch
 #| tbl-cap: Mismatches for Naïve-Bayes.
@@ -185,9 +188,17 @@ Finally we will be testing the Naive-Bayes model, which is also a relatively sim
 
 ## Model Comparisons
 
-As shown in Table x, we can see a negligible difference between Naive-Bayes and Logistic Regression. But we will choose to move forward with the Naive-Bayes classifier, as it is also a relatively simple model with slighlty faster fitting time.
+As shown in @tbl-model-comparison, we can see a negligible difference between Naive-Bayes and Logistic Regression. But we will choose to move forward with the Naive-Bayes classifier, as it is also a relatively simple model with slighlty faster fitting time.
 
-Table x: Comparisons of mean values of scores and times for all models.
+```{python}
+#| label: tbl-model-comparison
+#| tbl-cap: Performance comparison across the different models.
+
+models_comparison = pd.read_csv("../results/tables/model_comparison_mean.csv")
+Markdown(models_comparison.to_markdown(index = True))
+```
+
+
 
 ## Best Model Hyperparameter Optimisation
 

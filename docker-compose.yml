@@ -1,9 +1,6 @@
-# This composer will only work for machines running on Intel x86 architecture
-# For any other device, we recommend either running the remote docker image or
-# installing the virtual environment with the files provided.
 services:
   hotdog_predictor:
-    image: jentsang/hotdog-predictor:latest  
+    image: jentsang/hotdog-predictor:sha-561dde5  
     container_name: hotdog_predictor
     ports:
       - "8888:8888"
