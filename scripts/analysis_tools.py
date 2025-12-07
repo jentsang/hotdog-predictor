@@ -12,6 +12,7 @@ trees, logistic regression, and naive Bayes classifiers.
 import numpy as np
 import pandas as pd
 import altair as alt
+import pickle
 import matplotlib.pyplot as plt
 from sklearn.model_selection import (
     train_test_split, cross_validate,
@@ -52,8 +53,7 @@ class BOWModel():
         Test data.
     y_test : pandas.Series
         Test outputs.
-    random_state : int, default=522
-        Random seed used by subclasses that require a random state.
+
 
     Attributes
     ----------
@@ -100,7 +100,6 @@ class BOWModel():
             y_train: pd.Series,
             X_test: pd.Series,
             y_test: pd.Series,
-            random_state: int = 522
         ) -> None:
         """
         Initialize the base bag-of-words model.
@@ -118,8 +117,6 @@ class BOWModel():
             Stored test data.
         y_test : pandas.Series
             Stored test outputs.
-        random_state : int, default=522
-            Random seed used by subclasses that require a random state.
 
         Returns
         -------
@@ -127,7 +124,7 @@ class BOWModel():
         """
 
         self.pipeline: Pipeline | None = None
-        self.vocab: set[str] | None = None
+        self.vocab: list[str] | None = None
         self.model_name: str | None = None
         self.model: BaseEstimator | None = None
         
@@ -138,7 +135,7 @@ class BOWModel():
 
         return None
 
-    def assign_model(self) -> BaseEstimator | None:
+    def assign_model(self) -> type[BaseEstimator] | None:
         """
         Assign the estimator class corresponding to ``self.model_name``.
 
@@ -240,13 +237,19 @@ class ActualModel(BOWModel):
         Directory where tabular outputs (CSV files) will be written.
     figure_output_directory : str, default="../results/figures/"
         Directory where plots and figures will be written.
+    model_output_directory : str, default="../results/models/"
+        Directory where serialized model objects will be written.
+    random_state : int, default=522
+        Random seed used for randomized hyperparameter search and any
+        underlying stochastic estimators.
     **kwargs
-        Additional keyword arguments from `BOWModel`, including:
-        ``X_train``, ``y_train``, ``X_test``,
-        ``y_test``, and optionally ``random_state``.
+        Additional keyword arguments forwarded to :class:`BOWModel`,
+        including ``X_train``, ``y_train``, ``X_test``, and ``y_test``.
 
     Attributes
     ----------
+    random_state : int
+        Stored random seed used by the model and randomized search.
     model_name : str
         Name of the estimator.
     model : type of sklearn.base.BaseEstimator
@@ -257,6 +260,8 @@ class ActualModel(BOWModel):
         Base path for CSV outputs for this model.
     figure_output_path : str
         Base path for figure outputs for this model.
+    model_output_path : str
+        Base path for serialized model files for this model.
     scores : dict
         Dictionary for storing derived evaluation metrics.
     cv_raw_results : dict or None
@@ -283,6 +288,8 @@ class ActualModel(BOWModel):
             self, model_name: str,
             table_output_directory: str = "../results/tables/",
             figure_output_directory: str = "../results/figures/",
+            model_output_directory: str = "../results/models/",
+            random_state: int = 522,
             **kwargs
         ) -> None:
         """
@@ -296,10 +303,15 @@ class ActualModel(BOWModel):
             Directory where CSV outputs will be saved.
         figure_output_directory : str, default="../results/figures/"
             Directory where figures will be saved.
+        model_output_directory : str, default="../results/models/"
+            Directory where fitted models and best estimators will be
+            serialized to disk.
+        random_state : int, default=522
+            Random seed used for randomized hyperparameter search and
+            any stochastic components in the estimator.
         **kwargs
             Additional keyword arguments passed to :class:`BOWModel`
-            (e.g., ``X_train``, ``y_train``, ``X_test``, ``y_test``,
-            ``random_state``).
+            (e.g., ``X_train``, ``y_train``, ``X_test``, ``y_test``).
 
         Returns
         -------
@@ -317,8 +329,14 @@ class ActualModel(BOWModel):
         self.model = self.assign_model()
         self.is_fitted: bool = False
 
+        self.random_state: int = random_state
+
+        self.random_search: RandomizedSearchCV | None = None
+        self.is_rcv_fitted: bool = False
+
         self.table_output_path: str = table_output_directory + model_name
         self.figure_output_path: str = figure_output_directory + model_name
+        self.model_output_path: str = model_output_directory + model_name
 
         self.scores: dict = {}
         self.cv_raw_results = None
@@ -360,6 +378,27 @@ class ActualModel(BOWModel):
         self.check_pipeline()
 
         assert self.is_fitted, "The model has not been fitted yet"
+
+        return None
+    
+    def check_if_rcv_fitted(self) -> None:
+        """
+        Check that the randomized search has been run and fitted.
+
+        This helper verifies that `fit_randomized_CV` has created a
+        `sklearn.model_selection.RandomizedSearchCV` instance and
+        that it has been successfully fitted.
+
+        Raises
+        ------
+        AssertionError
+            If the randomized search object does not exist or has not
+            yet been fitted.
+        """
+
+        assert isinstance(self.random_search, RandomizedSearchCV), "The random search has not been performed yet"
+
+        assert self.is_rcv_fitted, "The random search has not been fitted yet"
 
         return None
     
@@ -441,7 +480,9 @@ class ActualModel(BOWModel):
         """
         Fit the pipeline on the training data.
 
-        Sets the ``is_fitted`` flag to True after successful fitting.
+        Sets the ``is_fitted`` flag to True after successful fitting and
+        serializes the fitted pipeline to
+        ``self.model_output_path + f'/{self.model_name}.pickle'``.
 
         Returns
         -------
@@ -455,9 +496,12 @@ class ActualModel(BOWModel):
         
         self.check_pipeline()
 
+        self.pipeline.fit(self.X_train, self.y_train)
+
         self.is_fitted = True
 
-        self.pipeline.fit(self.X_train, self.y_train)
+        with open(self.model_output_path + f'/{self.model_name}.pickle', 'wb') as f:
+            pickle.dump(self.pipeline, f)
 
         return None
     
@@ -490,6 +534,72 @@ class ActualModel(BOWModel):
             return self.pipeline.predict_proba(X_data)
 
         return self.pipeline.predict(X_data)
+    
+
+    def fit_randomized_CV(
+            self,
+            param_grid: dict,
+            iterations: int = 500,
+            jobs: int = -1
+        ) -> None:
+        """
+        Run a randomized hyperparameter search over the pipeline.
+
+        This method wraps `sklearn.model_selection.RandomizedSearchCV`
+        using the current text classification pipeline (vectorizer plus
+        estimator), fits the search on the training data, and stores the
+        best model and associated results on the instance. The best
+        estimator is also serialized to
+        ``self.model_output_path + f'/best_{self.model_name}.pickle'``.
+
+        Parameters
+        ----------
+        param_grid : dict
+            Mapping of hyperparameter names to distributions or lists of
+            candidate values, as expected by `RandomizedSearchCV`.
+        iterations : int, default=500
+            Number of parameter settings that are sampled.
+        jobs : int, default=-1
+            Number of jobs to run in parallel. ``-1`` means using all
+            available processors.
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        AssertionError
+            If the pipeline has not been built yet.
+        """
+
+        self.check_pipeline()
+
+        self.rcv_params: list = [f"param_{name}" for name in param_grid.keys()]
+
+        self.random_search: RandomizedSearchCV = RandomizedSearchCV(
+            self.pipeline,
+            param_distributions=param_grid,
+            n_jobs=jobs,
+            n_iter=iterations,
+            return_train_score=True,
+            random_state=self.random_state
+        )
+
+        self.random_search.fit(self.X_train, self.y_train)
+
+        self.is_rcv_fitted = True
+
+        self.best_model: BaseEstimator = self.random_search.best_estimator_
+
+        with open(self.model_output_path + f'/best_{self.model_name}.pickle', 'wb') as f:
+            pickle.dump(self.best_model, f)
+        
+        self.best_score: float = self.random_search.best_score_
+        self.best_params: dict = self.random_search.best_params_
+        self.rcv_results: pd.DataFrame = pd.DataFrame(self.random_search.cv_results_)
+
+        return None
     
     
     def store_raw_cv_scores(self) -> None:
@@ -641,6 +751,141 @@ class ActualModel(BOWModel):
         )
 
         return None
+    
+    def store_rcv_scores(self, head: bool = True) -> None:
+        """
+        Save summary scores from the randomized search to CSV.
+
+        The randomized search results stored in ``self.rcv_results`` are
+        filtered to a subset of informative columns and written to disk.
+        Optionally, only the top-ranked parameter settings are saved.
+
+        The output is written to either
+        ``self.table_output_path + "/RandomizedSearchCV_results_head.csv"``
+        or
+        ``self.table_output_path + "/RandomizedSearchCV_results_full.csv"``.
+
+        Parameters
+        ----------
+        head : bool, default=True
+            If True, save only the top 5 ranked parameter settings.
+            If False, save the full results table.
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        AssertionError
+            If the randomized search has not been run and fitted.
+        """
+
+        self.check_if_rcv_fitted()
+
+        columns: list = [
+            "rank_test_score",
+            "mean_test_score",
+            "mean_train_score",
+            "mean_fit_time",
+            "mean_score_time"
+        ] + self.rcv_params
+
+        results: pd.DataFrame = (
+            self.rcv_results[columns]
+            .set_index("rank_test_score")
+            .sort_index()
+        )
+
+        if head:
+
+            results.head(5).to_csv(
+                self.table_output_path + '/RandomizedSearchCV_results_head.csv'
+            )
+
+        else:      
+
+            results.to_csv(
+                self.table_output_path + '/RandomizedSearchCV_results_full.csv'
+            )
+
+        return None
+    
+    def store_best_rcv_model_mismatches(self) -> None:
+        """
+        Export misclassified test examples for the best CV model.
+
+        Uses the best estimator found by the randomized search to generate
+        predictions and class probabilities on the test set. Only examples
+        where ``y != y_hat`` are retained and written to
+
+        ``self.table_output_path + "/best_rcv_model_test_mismatches.csv"``
+
+        for later inspection.
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        AssertionError
+            If the randomized search has not been run and fitted.
+        """
+
+        self.check_if_rcv_fitted()
+
+        data_dict: dict = {
+            "y": self.y_test.to_list(),
+            "y_hat": list(self.best_model.predict(self.X_test)),
+            "probabilities": list(self.best_model.predict_proba(self.X_test)),
+            "x": self.X_test.to_list(),
+        }
+    
+        df: pd.DataFrame = pd.DataFrame(data_dict)
+
+        df[df["y"] != df["y_hat"]].sort_values('probabilities').to_csv(
+            self.table_output_path + "/best_rcv_model_test_mismatches.csv",
+            index=False
+        )
+
+        return None
+    
+    def store_best_rcv_confusion_matrix(self) -> None:
+        """
+        Save a confusion matrix for the best CV model on the test set.
+
+        Uses the best estimator obtained from the randomized search to
+        compute a confusion matrix on ``X_test`` / ``y_test`` via
+        `sklearn.metrics.ConfusionMatrixDisplay`. The resulting
+        figure is written to
+
+        ``self.figure_output_path + "/best_rcv_model_test_confusion_matrix.png"``
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        AssertionError
+            If the randomized search has not been run and fitted.
+        """
+
+        self.check_if_rcv_fitted()
+
+        disp = ConfusionMatrixDisplay.from_predictions(
+            self.y_test,
+            self.best_model.predict(self.X_test)
+        )
+        
+        disp.figure_.savefig(
+            self.figure_output_path + "/best_rcv_model_test_confusion_matrix.png"
+        )
+
+        return None
+
+
 
 class TreeModel(ActualModel):
     """
@@ -658,10 +903,10 @@ class TreeModel(ActualModel):
         Parameters
         ----------
         **kwargs
-            Keyword arguments forwarded to `ActualModel` and
-            `BOWModel`, including ``X_train``, ``y_train``,
-            ``X_test``, ``y_test``, and ``random_state``.
-
+            Keyword arguments forwarded to :class:`ActualModel` and
+            :class:`BOWModel`, typically including ``X_train``,
+            ``y_train``, ``X_test``, ``y_test``, and optionally a
+            ``random_state`` that is handled by :class:`ActualModel`.
         Returns
         -------
         None
@@ -670,7 +915,7 @@ class TreeModel(ActualModel):
         super().__init__(model_name = "DecisionTree", **kwargs)
 
         self.build_pipeline()
-        self.pipeline.named_steps["decisiontreeclassifier"].set_params(random_state=kwargs["random_state"])
+        self.pipeline.named_steps["decisiontreeclassifier"].set_params(random_state=self.random_state)
 
         return None
     
@@ -737,9 +982,10 @@ class LRModel(ActualModel):
         Parameters
         ----------
         **kwargs
-            Keyword arguments forwarded to `ActualModel` and
-            `BOWModel`, including ``X_train``, ``y_train``,
-            ``X_test``, ``y_test``, and ``random_state``.
+            Keyword arguments forwarded to :class:`ActualModel` and
+            :class:`BOWModel`, typically including ``X_train``,
+            ``y_train``, ``X_test``, ``y_test``, and optionally a
+            ``random_state`` that is handled by :class:`ActualModel`.
 
         Returns
         -------
@@ -749,7 +995,7 @@ class LRModel(ActualModel):
         super().__init__(model_name = "LogisticRegression", **kwargs)
 
         self.build_pipeline()
-        self.pipeline.named_steps["logisticregression"].set_params(random_state=kwargs["random_state"])
+        self.pipeline.named_steps["logisticregression"].set_params(random_state=self.random_state)
 
         return None
 
