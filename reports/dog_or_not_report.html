@@ -9,7 +9,7 @@
 <meta name="author" content="Zaki Aslam, Hector Palafox Prieto, Jennifer Tsang, &amp; Samrawit Mezgebo Tsegay">
 <meta name="dcterms.date" content="2025-12-07">
 
-<title>Predicting food specialization from a food vendors’ names.</title>
+<title>Predicting food specialization from a food vendor’s name.</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -102,33 +102,29 @@ window.Quarto = {
   <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a>
   <ul class="collapse">
   <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
-  <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis">Analysis</a>
-  <ul class="collapse">
-  <li><a href="#eda" id="toc-eda" class="nav-link" data-scroll-target="#eda">EDA</a></li>
-  <li><a href="#baseline" id="toc-baseline" class="nav-link" data-scroll-target="#baseline">Baseline</a></li>
-  </ul></li>
+  <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis">Analysis</a></li>
   </ul></li>
   <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a>
   <ul class="collapse">
-  <li><a href="#eda-1" id="toc-eda-1" class="nav-link" data-scroll-target="#eda-1">EDA</a></li>
-  <li><a href="#baseline-1" id="toc-baseline-1" class="nav-link" data-scroll-target="#baseline-1">Baseline</a></li>
+  <li><a href="#eda" id="toc-eda" class="nav-link" data-scroll-target="#eda">EDA</a></li>
+  <li><a href="#baseline" id="toc-baseline" class="nav-link" data-scroll-target="#baseline">Baseline</a></li>
   <li><a href="#decision-tree" id="toc-decision-tree" class="nav-link" data-scroll-target="#decision-tree">Decision Tree</a></li>
   <li><a href="#logistic-regression" id="toc-logistic-regression" class="nav-link" data-scroll-target="#logistic-regression">Logistic Regression</a></li>
-  <li><a href="#naïve-bayes" id="toc-naïve-bayes" class="nav-link" data-scroll-target="#naïve-bayes">Naïve-Bayes</a></li>
+  <li><a href="#naive-bayes" id="toc-naive-bayes" class="nav-link" data-scroll-target="#naive-bayes">Naive-Bayes</a></li>
   <li><a href="#model-comparisons" id="toc-model-comparisons" class="nav-link" data-scroll-target="#model-comparisons">Model Comparisons</a></li>
   <li><a href="#best-model-hyperparameter-optimisation" id="toc-best-model-hyperparameter-optimisation" class="nav-link" data-scroll-target="#best-model-hyperparameter-optimisation">Best Model Hyperparameter Optimisation</a></li>
   </ul></li>
   <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="dog_or_not_report.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="../dog_or_not_report.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
 </div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Predicting food specialization from a food vendors’ names.</h1>
-<p class="subtitle lead">A comprehensive classifier analysis on the association of vendor names with its description</p>
+<h1 class="title">Predicting food specialization from a food vendor’s name.</h1>
+<p class="subtitle lead">A comprehensive classifier analysis on the association of food vendor names with its description</p>
 </div>
 
 
@@ -160,12 +156,10 @@ window.Quarto = {
 <section id="summary" class="level1">
 <h1>Summary</h1>
 <p>In this project, we used decision trees, logistic regression, and a Naive Bayes classifier to identify whether or not a food vendor sells hot dogs via their name. We trained each model individually using a cross-validation setup, and we compared the scores of the accuracy in order to determine a model to train and to compare to the test data. The model we chose, finally, was the Naive Bayes, as it provided a slightly better score and less underfit and overfit than the other models present. Finally, we validated it with our test data and came to the conclusion that even though it is good enough for classifying most of the cases, it still struggles discerning from the minority class, which in our case, is our target.</p>
-<p><span style="color:red;">Add results into the Summary section</span></p>
 </section>
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
 <p>Food trucks and mobile food vendors are a common sight in Downtown Vancouver, offering a wide range of cuisine types from hot dogs and burgers to shawarma and tacos. With so many different vendors and food options, it can be useful to automatically identify what kind of food a vendor specializes in based only on select information. In this project, we study whether we can predict if a food vendor is a hot dog vendor or not using the vendor’s business name. We used a publicly available dataset of mobile food vendors in Vancouver from the City of Vancouver’s open data portal, where each row represents relevant information for a single food vendor and includes columns such as BUSINESS_NAME, LOCATION, DESCRIPTION, GEO_LOCALAREA, and geographic coordinates. For our analysis, we constructed a binary target variable named is_hotdog, which is True when the DESCRIPTION is “Hot Dogs” and False otherwise. This allows us to investigate how much information about the type of food a vendor sells can be extracted from the business name, as well as putting to test the prediction power of some of the most common classification algorithms: Decision Trees, Logistic Regression, and Naïve-Bayes.</p>
-<p><span style="color:red;">Add references (food vendors/trucks in vancouver) into the Intro section, it is impoart to know the category of food distributed through out vancouver for new liscencing, the public can find it easily and we can ensure an even distribution of different categories of food. In this case, we will be focused on predicting hotdogs</span></p>
 </section>
 <section id="methods" class="level1">
 <h1>Methods</h1>
@@ -176,32 +170,18 @@ window.Quarto = {
 </section>
 <section id="analysis" class="level2">
 <h2 class="anchored" data-anchor-id="analysis">Analysis</h2>
-<p>Performed EDA, and 4 different models to compare before choosing the best score for evalution…</p>
-<p>We chose to split our data with 70% used for training and 30% used for test evaluation.</p>
-<section id="eda" class="level3">
-<h3 class="anchored" data-anchor-id="eda">EDA</h3>
-<p>Given that we are interested in solely the classification power of the name, we will be taking a look more into the classes present into our training set.</p>
-</section>
-<section id="baseline" class="level3">
-<h3 class="anchored" data-anchor-id="baseline">Baseline</h3>
-<p>We will be using a dummy classifier as a baseline to compare our different models. For this and all our models we will use 5 cross validation folds.</p>
-<p>For this analysis we will implement a CountVectorizer object to create a bag of words (BOW). This method will split each individual word in the names of the businesses into its own individual columns, and will assess whether or not the word is present in the data set.</p>
-<p>We will then pass this CountVectorizer into a pipeline with the different models we want to test:</p>
-<p>DummyClassifier: This will be our baseline to check on how we will predict whether or not the vendor sells hot dogs or not. DecisionTreeClassifier: This simple model will help us identify if simple decisions map out the relationship of the names to the category. LogisticRegression: This model will help us identify if there are linear relationships in the model, and which tokens are more relevant for our classification. BernoulliNB (Naïve-Bayes): This model is quick to fit and train, and uses a probabilistic approach to the classification, and it would be interesting to see how it fares in comparison to the rest of them. After performing the evaluation for each model, we will compare them all together and train the best one, optimising its hyperparameters. We will score based on the model accuracy (correct predictions over total predictions), as this is just a simple experiment to validate the relationship of these 2 variables.</p>
-<p>With the best model, we will take a peek on how it performs on the test data, and evaluate our conclusions.</p>
-</section>
+<p>The dataset was partitioned into 70% for training set and 30% for testing set. Following an exploratory data analysis (EDA), a CountVectorizer was implemented to generate a Bag-of-Words (BoW) representation. This method will split each individual word in the names of the businesses into its own individual columns, and will assess whether or not the word is present in the data set. Four distinct models were compared using 5-fold cross-validation: 1) DummyClassifier: Used as a baseline to establish the minimum acceptable performance for predicting the ‘hot dog’ category, 2) DecisionTreeClassifier: Selected to determine if simple, hierarchical decision rules could effectively map out the relationship of the names to the category, 3) LogisticRegression: Included to identify linear relationships and determine which specific tokens (words) were most relevant for classification, and 4) BernoulliNB (Naïve-Bayes): Chosen for its efficiency in training and its probabilistic approach to classification. The models were ranked based on accuracy (<span class="math inline">\(\frac{\text{correct predictions}}{\text{total predictions}}\)</span>). The top-performing model chosen was Naïve-Bayes and hyperparameter optimization was performed. The hyperparamters optimated were the <code>alpha</code> hyperparameter (which controls the tradeoff between variance and bias of our model), as well as the <code>max_features</code> variable (the actual size of our vocabulary considering the top <code>max_features</code> words) of our <code>CountVectorizer</code>, as this can also play a role in overfitting. A randomised approach was used to test in a wide space, with 500 iterations and a random integer ranging from <span class="math inline">\([5, \text{size of the vocabulary}]\)</span> for <code>max_features</code>, and a loguniform distribution ranging from <span class="math inline">\([0.001, 1000]\)</span> for <code>alpha</code>. Lastly, the model was retrained using the best hyperparameters selections and evaluted with the test set to formulate the final conclusion.</p>
 </section>
 </section>
 <section id="results" class="level1">
 <h1>Results</h1>
-<section id="eda-1" class="level3">
-<h3 class="anchored" data-anchor-id="eda-1">EDA</h3>
-<p><span style="color:red;">Add EDA results here</span></p>
-<p>When visualizing our EDA <span class="citation" data-cites="W3SchoolsCSSColors">(<a href="#ref-W3SchoolsCSSColors" role="doc-biblioref">W3Schools 2025</a>)</span> we can notice several key points. From <a href="#fig-most-common-cuisine" class="quarto-xref">Figure&nbsp;1</a>, we can see that of all the cuisine types from Downtown Vancouver food vendors, hot dog stands seem to be the most common of them all. It is also very important to analyze our classes before starting our work. When you have a large class imbalance, a lot of the times your model will give you a score that is not representative of whether or not your model works well. For example, if you observe the second plot for a data set where one class is represented in a much higher proportion than the other, a model like DummyClassifier will give you an extremely high score. This isn’t because the model works perfectly it’s because it’ll always predict the higher represented class! Yet we can see from <a href="#fig-class-imbalance" class="quarto-xref">Figure&nbsp;2</a> that we do not have that issue as much here as the class imbalance isn’t too severed. Lastly, we noticed that there were some initial blanks in the BUSINESS_NAME which we addressed by changing it to an empty space (and thus not screwing up the CountVectorizer instance we will need for this analysis). We can observe from <span class="citation" data-cites="blank-names">(<a href="#ref-blank-names" role="doc-biblioref"><strong>blank-names?</strong></a>)</span> that all the cases of a blank BUSINESS_NAME are belong to Hot Dog vendors, which would be something we would like our models to capture. Finally, we would expect for our classifier to be able to identify the “easy” base case of having no name, since this is a relevant discriminator for both our classes.</p>
+<section id="eda" class="level2">
+<h2 class="anchored" data-anchor-id="eda">EDA</h2>
+<p>When visualizing our EDA we can notice several key points <span class="citation" data-cites="W3SchoolsCSSColors">(<a href="#ref-W3SchoolsCSSColors" role="doc-biblioref">W3Schools 2025</a>)</span>. From <a href="#fig-most-common-cuisine" class="quarto-xref">Figure&nbsp;1</a>, we can see that of all the cuisine types from Downtown Vancouver food vendors, hot dog stands seem to be the most common of them all. It is also very important to analyze our classes before starting our work. When you have a large class imbalance, a lot of the times your model will give you a score that is not representative of whether or not your model works well. For example, if you observe the second plot for a data set where one class is represented in a much higher proportion than the other, a model like DummyClassifier will give you an extremely high score. This isn’t because the model works perfectly it’s because it’ll always predict the higher represented class! Yet we can see from <a href="#fig-class-imbalance" class="quarto-xref">Figure&nbsp;2</a> that we do not have that issue as much here as the class imbalance isn’t too severed. Lastly, we noticed that there were some initial blanks in the BUSINESS_NAME which we addressed by changing it to an empty space (and thus not screwing up the CountVectorizer instance we will need for this analysis). We can observe from <a href="#fig-blank-names" class="quarto-xref">Figure&nbsp;3</a> that all the cases of a blank BUSINESS_NAME are belong to Hot Dog vendors, which would be something we would like our models to capture. Finally, we would expect for our classifier to be able to identify the “easy” base case of having no name, since this is a relevant discriminator for both our classes.</p>
 <div id="fig-most-common-cuisine" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-most-common-cuisine-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../results/figures/dummy_images.png" class="img-fluid figure-img" style="width:70.0%">
+<img src="../results/figures/EDA/plot1_cuisine_types.png" class="img-fluid figure-img" style="width:90.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-most-common-cuisine-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1: Most common cuisine types among food vendors in Downtown Vancouver.
@@ -211,7 +191,7 @@ Figure&nbsp;1: Most common cuisine types among food vendors in Downtown Vancouve
 <div id="fig-class-imbalance" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-class-imbalance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../results/figures/dummy_images.png" class="img-fluid figure-img" style="width:70.0%">
+<img src="../results/figures/EDA/plot2_class_imbalance.png" class="img-fluid figure-img" style="width:60.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-class-imbalance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2: Class imbalance in training data.
@@ -221,7 +201,7 @@ Figure&nbsp;2: Class imbalance in training data.
 <div id="fig-blank-names" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-blank-names-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../results/figures/dummy_images.png" class="img-fluid figure-img" style="width:70.0%">
+<img src="../results/figures/EDA/plot3_blank_names_vs_hotdog.png" class="img-fluid figure-img" style="width:80.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-blank-names-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;3: Blank names relevance in classification.
@@ -229,53 +209,16 @@ Figure&nbsp;3: Blank names relevance in classification.
 </figure>
 </div>
 </section>
-<section id="baseline-1" class="level3">
-<h3 class="anchored" data-anchor-id="baseline-1">Baseline</h3>
-<p><span style="color:red;">Code result value of 0.65 here</span></p>
-<p>As expected, we can see from <strong>?@tbl-dummy-cv</strong> the dummy consistently predicts the majority class, with accuracy of around {python} dummy_accuracy, being consistent with the representation of our split.</p>
-</section>
-<section id="decision-tree" class="level3">
-<h3 class="anchored" data-anchor-id="decision-tree">Decision Tree</h3>
-<p><span style="color:red;">update code result value here</span></p>
-<p>Here we are training a simple decision tree to identify whether the vendor sells hot dogs or not. This is a simple model with easy to interpret coefficients, and it would be interesting checking whether or not it correctly identified some of the most relevant clues (something like “Joe’s Hot Dogs” being correctly classified, for instance).</p>
-<p>From <strong>?@tbl-decisiontree-cv</strong>, we can see that the decision tree performs worse than the dummy classifier, as it is overfitting the prediction, which is evident in the substantial gap between the validation and training scores (around {python} decisiontree_accuracy difference for all folds).</p>
-<p><span style="color:red;">update code result for 34 levels here</span></p>
-<p>By taking a look at the depths and tree structure from <a href="#fig-decision-tree-structure" class="quarto-xref">Figure&nbsp;4</a> to better understand these discrepancies. As we can see, the model contains <strong>34</strong> levels of decisions, yet, the level of specificity (given that we are using a bag of words) makes it perform poorly. Here we can see (figure 4) the most discriminating factors. We can observe some sensible initial discriminations, such as “dogs”, “japadog” and “dog”, which would quickly identify the vendor as a Hot Dog place.</p>
-<div id="fig-decision-tree-structure" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-decision-tree-structure-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../results/figures/dummy_images.png" class="img-fluid figure-img" style="width:70.0%">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-decision-tree-structure-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4: Decision tree structure (limited to the first 5 levels of the depth).
-</figcaption>
-</figure>
-</div>
-<p>Here we can observe <a href="#fig-decision-tree-cm" class="quarto-xref">Figure&nbsp;5</a> and misses in the cross validation of the model trained. We can observe that the model is very good at identifying when something seems “Hot-Doggy”, yet, it produces a high degree of false positives. We can observe some of the mistakes below (table 8). Here we are seeing that the model tends to predict most of the time that the vendor is a hot dog stand, with probably the only reasonable exception being Van Dog.</p>
-<div id="fig-decision-tree-cm" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-decision-tree-cm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../results/figures/dummy_images.png" class="img-fluid figure-img" style="width:70.0%">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-decision-tree-cm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5: Confusion matrix for the Decision Tree.
-</figcaption>
-</figure>
-</div>
-<p>Table 8: Mismatches for Decision Tree.</p>
-<p><span style="color:red;">add table</span></p>
-</section>
-<section id="logistic-regression" class="level3">
-<h3 class="anchored" data-anchor-id="logistic-regression">Logistic Regression</h3>
-<p>Here we will train a logistic regression in order to see whether or not we can improve our accuracy and reduce the possible overfitting. This model also has the advantage of having interpretable parameters, which in our case relate how often each of our features is associated with the target variable (<code>is_hotdog = True</code>).</p>
-<div class="cell" data-execution_count="4">
-<div id="tbl-lr-cv" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="4">
+<section id="baseline" class="level2">
+<h2 class="anchored" data-anchor-id="baseline">Baseline</h2>
+<div class="cell" data-execution_count="3">
+<div id="tbl-dummy-cv" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="3">
 <figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-lr-cv-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;1: Logistic regression cross validation scores and times.
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-dummy-cv-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: DummyClassifier cross validation scores and times.
 </figcaption>
-<div aria-describedby="tbl-lr-cv-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="47">
+<div aria-describedby="tbl-dummy-cv-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="147">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -287,31 +230,227 @@ Table&nbsp;1: Logistic regression cross validation scores and times.
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">0.0547</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0037</td>
+<td style="text-align: right;">0.6154</td>
+<td style="text-align: right;">0.66</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0021</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.6154</td>
+<td style="text-align: right;">0.66</td>
+</tr>
+<tr class="odd">
 <td style="text-align: right;">0.002</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.6923</td>
+<td style="text-align: right;">0.64</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0026</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.6667</td>
+<td style="text-align: right;">0.6471</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0023</td>
+<td style="text-align: right;">0.6667</td>
+<td style="text-align: right;">0.6471</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>As expected, we can see from <a href="#tbl-dummy-cv" class="quarto-xref">Table&nbsp;1</a> that the dummy consistently predicts the majority class, with accuracy of around 0.6513, being consistent with the representation of our split.</p>
+</section>
+<section id="decision-tree" class="level2">
+<h2 class="anchored" data-anchor-id="decision-tree">Decision Tree</h2>
+<p>Here we are training a simple decision tree to identify whether the vendor sells hot dogs or not. This is a simple model with easy to interpret coefficients, and it would be interesting checking whether or not it correctly identified some of the most relevant clues (something like “Joe’s Hot Dogs” being correctly classified, for instance).</p>
+<div class="cell" data-execution_count="4">
+<div id="tbl-decisiontree-cv" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="4">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-decisiontree-cv-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Decision tree cross validation scores and times.
+</figcaption>
+<div aria-describedby="tbl-decisiontree-cv-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="148">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">fit_time</th>
+<th style="text-align: right;">score_time</th>
+<th style="text-align: right;">test_score</th>
+<th style="text-align: right;">train_score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0.0084</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.6154</td>
+<td style="text-align: right;">0.98</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0062</td>
+<td style="text-align: right;">0.6923</td>
+<td style="text-align: right;">0.98</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.004</td>
+<td style="text-align: right;">0.6923</td>
+<td style="text-align: right;">0.98</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0036</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.4167</td>
+<td style="text-align: right;">0.9804</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0038</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.4167</td>
+<td style="text-align: right;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>From <a href="#tbl-decisiontree-cv" class="quarto-xref">Table&nbsp;2</a>, we can see that the decision tree performed worse than the dummy classifier, as it is overfitting the prediction, which is evident in the substantial gap between the validation and training scores. By taking a look at the depths and tree structure, we can see the most discriminating factors, and better understand these discrepancies. From <a href="#fig-decision-tree-structure" class="quarto-xref">Figure&nbsp;4</a>, we can observe some sensible initial discriminations, such as “dogs”, “japadog” and “dog”, which would quickly identify the vendor as a Hot Dog place. As we can see, the model contains 34 levels of decisions, yet, the level of specificity (given that we are using a bag of words) makes it perform poorly.</p>
+<div id="fig-decision-tree-structure" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-decision-tree-structure-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../results/figures/DecisionTree/diagram.png" class="img-fluid figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-decision-tree-structure-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Decision tree structure (limited to the first 5 levels of the depth).
+</figcaption>
+</figure>
+</div>
+<div id="fig-decision-tree-cm" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-decision-tree-cm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../results/figures/DecisionTree/train_confusion_matrix.png" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-decision-tree-cm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Confusion matrix for the Decision Tree.
+</figcaption>
+</figure>
+</div>
+<div class="cell" data-execution_count="5">
+<div id="tbl-dt-mismatch" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="5">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-dt-mismatch-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: Mismatches for Decision Tree.
+</figcaption>
+<div aria-describedby="tbl-dt-mismatch-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="149">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">fit_time</th>
+<th style="text-align: right;">score_time</th>
+<th style="text-align: right;">test_score</th>
+<th style="text-align: right;">train_score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0.0084</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.6154</td>
+<td style="text-align: right;">0.98</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0062</td>
+<td style="text-align: right;">0.6923</td>
+<td style="text-align: right;">0.98</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.004</td>
+<td style="text-align: right;">0.6923</td>
+<td style="text-align: right;">0.98</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0036</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.4167</td>
+<td style="text-align: right;">0.9804</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0038</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.4167</td>
+<td style="text-align: right;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>From <a href="#fig-decision-tree-cm" class="quarto-xref">Figure&nbsp;5</a>, we can observe the confusion matrix and the misses in the cross validation of the model trained. We can observe that the model is very good at identifying when something seems “Hot-Doggy”, yet, it produces a high degree of false positives. We can observe some of the mistakes shown below in <a href="#tbl-dt-mismatch" class="quarto-xref">Table&nbsp;3</a>, and see that the model tends to predict most of the time that the vendor is a hot dog stand, with probably the only reasonable exception being Van Dog.</p>
+</section>
+<section id="logistic-regression" class="level2">
+<h2 class="anchored" data-anchor-id="logistic-regression">Logistic Regression</h2>
+<p>Here we will train a logistic regression in order to see whether or not we can improve our accuracy and reduce the possible overfitting. This model also has the advantage of having interpretable parameters, which in our case relate how often each of our features is associated with the target variable (<code>is_hotdog = True</code>).</p>
+<div class="cell" data-execution_count="6">
+<div id="tbl-lr-cv" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="6">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-lr-cv-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;4: Logistic regression cross validation scores and times.
+</figcaption>
+<div aria-describedby="tbl-lr-cv-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="150">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">fit_time</th>
+<th style="text-align: right;">score_time</th>
+<th style="text-align: right;">test_score</th>
+<th style="text-align: right;">train_score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
 <td style="text-align: right;">0.6923</td>
 <td style="text-align: right;">0.8</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.0039</td>
+<td style="text-align: right;">0.0101</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0.7692</td>
 <td style="text-align: right;">0.82</td>
 </tr>
 <tr class="odd">
+<td style="text-align: right;">0.001</td>
 <td style="text-align: right;">0</td>
-<td style="text-align: right;">0.005</td>
 <td style="text-align: right;">0.7692</td>
 <td style="text-align: right;">0.82</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.006</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0.9167</td>
 <td style="text-align: right;">0.7843</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">0.009</td>
+<td style="text-align: right;">0</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0.75</td>
 <td style="text-align: right;">0.8235</td>
@@ -323,57 +462,62 @@ Table&nbsp;1: Logistic regression cross validation scores and times.
 </figure>
 </div>
 </div>
-<p>From <a href="#tbl-lr-cv" class="quarto-xref">Table&nbsp;1</a> We can see a slight improvement in generalisation from the decision tree, but it performs not much better than the dummy regressor with an average validation score of np.float64(0.779). This could indicate that there may not be a single independent linear relationship in the token features to the target. Also it is worth noting that the model has a lot variability between folds.</p>
-<p>From <a href="#tbl-lr-coef" class="quarto-xref">Table&nbsp;2</a> and <a href="#fig-lr-top5" class="quarto-xref">Figure&nbsp;6</a>, we can see that the coefficients associated roughly match with the choices determined by the decision tree, with “japadog”, “dog”, and “dogs” being relevant. Yet if we observe the intercept, we see the model is heavily biased into making a negative prediction. Thus, we would not expect the model being good in identifying hot dog places in particular.</p>
-<p>The number of coefficients produced is <strong>95</strong></p>
-<p>The intercept is <strong>-0.33</strong></p>
-<div class="cell" data-execution_count="5">
-<div id="tbl-lr-coef" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="5">
+<p>From <a href="#tbl-lr-cv" class="quarto-xref">Table&nbsp;4</a> We can see a slight improvement in generalisation from the decision tree, but it performs not much better than the dummy regressor with an average validation score of 0.779. This could indicate that there may not be a single independent linear relationship in the token features to the target. Also it is worth noting that the model has a lot variability between folds.</p>
+<div class="cell" data-execution_count="7">
+<div id="tbl-lr-coef" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="7">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-lr-coef-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2: Coefficients of the logistic regression.
+Table&nbsp;5: Coefficients of the logistic regression.
 </figcaption>
 <div aria-describedby="tbl-lr-coef-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="48">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="151">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th style="text-align: right;">fit_time</th>
-<th style="text-align: right;">score_time</th>
-<th style="text-align: right;">test_score</th>
-<th style="text-align: right;">train_score</th>
+<th style="text-align: left;">token</th>
+<th style="text-align: right;">coefficients</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">0.0547</td>
-<td style="text-align: right;">0.002</td>
-<td style="text-align: right;">0.6923</td>
-<td style="text-align: right;">0.8</td>
+<td style="text-align: left;">actual</td>
+<td style="text-align: right;">-0.287395</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.0039</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0.7692</td>
-<td style="text-align: right;">0.82</td>
+<td style="text-align: left;">ali</td>
+<td style="text-align: right;">0.258929</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0.005</td>
-<td style="text-align: right;">0.7692</td>
-<td style="text-align: right;">0.82</td>
+<td style="text-align: left;">arancino</td>
+<td style="text-align: right;">-0.209049</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0.9167</td>
-<td style="text-align: right;">0.7843</td>
+<td style="text-align: left;">arepa</td>
+<td style="text-align: right;">-0.287395</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">0.009</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0.75</td>
-<td style="text-align: right;">0.8235</td>
+<td style="text-align: left;">arturo</td>
+<td style="text-align: right;">-0.195682</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">truck</td>
+<td style="text-align: right;">-0.463946</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">van</td>
+<td style="text-align: right;">0.208222</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">vij</td>
+<td style="text-align: right;">-0.251701</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">wraps</td>
+<td style="text-align: right;">-0.330149</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">yokabai</td>
+<td style="text-align: right;">-0.337719</td>
 </tr>
 </tbody>
 </table>
@@ -385,32 +529,32 @@ Table&nbsp;2: Coefficients of the logistic regression.
 <div id="fig-lr-top5" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-lr-top5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../results/figures/LogisticRegression/most_discriminant_features.png" class="img-fluid figure-img" style="width:70.0%">
+<img src="../results/figures/LogisticRegression/most_discriminant_features.png" class="img-fluid figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-lr-top5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;6: Top 5 most discriminant features (upper and lower).
 </figcaption>
 </figure>
 </div>
-<p>In <a href="#fig-lr-cm" class="quarto-xref">Figure&nbsp;7</a> we can observe the confusion metrics and misses in the cross validation of the model. We can observe that the logistic regression is not particularly good at discriminating, since it is evidently favouring the “not hot dog” class, as we expected from the coefficients calculated. We can also see the patterns for the mismatches in <a href="#tbl-lr-mismatch" class="quarto-xref">Table&nbsp;3</a>. We can see the model failed identifying some of the “easy” catches we found previously, such as identifying blanks or keywords like “dog” which do not skew the balance enough in favour of the target class.</p>
+<p>From <a href="#tbl-lr-coef" class="quarto-xref">Table&nbsp;5</a> and <a href="#fig-lr-top5" class="quarto-xref">Figure&nbsp;6</a>, we can see that the coefficients associated roughly match with the choices determined by the decision tree, with “japadog”, “dog”, and “dogs” being relevant. Yet if we observe the intercept, we see the model is heavily biased into making a negative prediction. Thus, we would not expect the model being good in identifying hot dog places in particular. The number of coefficients produced is 95 and the intercept is -0.335.</p>
 <div id="fig-lr-cm" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-lr-cm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../results/figures/LogisticRegression/train_confusion_matrix.png" class="img-fluid figure-img" style="width:70.0%">
+<img src="../results/figures/LogisticRegression/train_confusion_matrix.png" class="img-fluid figure-img" style="width:80.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-lr-cm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;7: Confusion matrix for the Logistic Regression.
 </figcaption>
 </figure>
 </div>
-<div class="cell" data-execution_count="6">
-<div id="tbl-lr-mismatch" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="6">
+<div class="cell" data-execution_count="8">
+<div id="tbl-lr-mismatch" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="8">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-lr-mismatch-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;3: Mismatches for Logistic Regression.
+Table&nbsp;6: Mismatches for Logistic Regression.
 </figcaption>
 <div aria-describedby="tbl-lr-mismatch-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="49">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="152">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 9%">
@@ -518,18 +662,18 @@ Table&nbsp;3: Mismatches for Logistic Regression.
 </figure>
 </div>
 </div>
+<p>In <a href="#fig-lr-cm" class="quarto-xref">Figure&nbsp;7</a> we can observe the confusion metrics and misses in the cross validation of the model. We can observe that the logistic regression is not particularly good at discriminating, since it is evidently favouring the “not hot dog” class, as we expected from the coefficients calculated. We can also see the patterns for the mismatches in <a href="#tbl-lr-mismatch" class="quarto-xref">Table&nbsp;6</a>. We can see the model failed identifying some of the “easy” catches we found previously, such as identifying blanks or keywords like “dog” which do not skew the balance enough in favour of the target class.</p>
 </section>
-<section id="naïve-bayes" class="level3">
-<h3 class="anchored" data-anchor-id="naïve-bayes">Naïve-Bayes</h3>
-<p>Finally we will be testing the Naïve-Bayes model, which is also a relatively simple model that also does not tend to over-fit as much, just to see which model is best. The cross validation scores and time are shown in <a href="#tbl-nb-cv" class="quarto-xref">Table&nbsp;4</a>. We can also see that it performs better than the tree and dummy with less overfit, although not very consistently, like the logistic regression.</p>
-<div class="cell" data-execution_count="7">
-<div id="tbl-nb-cv" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="7">
+<section id="naive-bayes" class="level2">
+<h2 class="anchored" data-anchor-id="naive-bayes">Naive-Bayes</h2>
+<div class="cell" data-execution_count="9">
+<div id="tbl-nb-cv" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="9">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-nb-cv-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;4: Naïve-Bayes cross validation scores and times.
+Table&nbsp;7: Naïve-Bayes cross validation scores and times.
 </figcaption>
 <div aria-describedby="tbl-nb-cv-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="50">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="153">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -541,32 +685,32 @@ Table&nbsp;4: Naïve-Bayes cross validation scores and times.
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">0.0079</td>
-<td style="text-align: right;">0.0008</td>
+<td style="text-align: right;">0.0034</td>
+<td style="text-align: right;">0.0006</td>
 <td style="text-align: right;">0.6923</td>
 <td style="text-align: right;">0.8</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.0012</td>
-<td style="text-align: right;">0.0005</td>
+<td style="text-align: right;">0.001</td>
+<td style="text-align: right;">0.0004</td>
 <td style="text-align: right;">0.7692</td>
 <td style="text-align: right;">0.82</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">0.001</td>
-<td style="text-align: right;">0.0005</td>
+<td style="text-align: right;">0.0009</td>
+<td style="text-align: right;">0.0004</td>
 <td style="text-align: right;">0.7692</td>
 <td style="text-align: right;">0.82</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.001</td>
-<td style="text-align: right;">0.0005</td>
+<td style="text-align: right;">0.0009</td>
+<td style="text-align: right;">0.0004</td>
 <td style="text-align: right;">0.9167</td>
 <td style="text-align: right;">0.7843</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">0.001</td>
-<td style="text-align: right;">0.0005</td>
+<td style="text-align: right;">0.0009</td>
+<td style="text-align: right;">0.0004</td>
 <td style="text-align: right;">0.75</td>
 <td style="text-align: right;">0.8235</td>
 </tr>
@@ -577,26 +721,24 @@ Table&nbsp;4: Naïve-Bayes cross validation scores and times.
 </figure>
 </div>
 </div>
-<p>Here we can observe the confusion metrics and misses in the cross validation of the model trained in <a href="#fig-nb-cm" class="quarto-xref">Figure&nbsp;8</a>. It performs quite similar to the logistic regression, as we can see is not particularly good at identifying hot dog features.</p>
 <div id="fig-nb-cm" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-nb-cm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../results/figures/NaiveBayes/train_confusion_matrix.png" class="img-fluid figure-img" style="width:70.0%">
+<img src="../results/figures/NaiveBayes/train_confusion_matrix.png" class="img-fluid figure-img" style="width:80.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nb-cm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;8: Confusion matrix for the Naïve-Bayes classifier.
 </figcaption>
 </figure>
 </div>
-<p>From the mismatches in <a href="#tbl-nb-mismatch" class="quarto-xref">Table&nbsp;5</a>, we see a similar pattern as the logistic regression, failing to identify the “obvious” patterns we stated in the beginning.</p>
-<div class="cell" data-execution_count="8">
-<div id="tbl-nb-mismatch" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="8">
+<div class="cell" data-execution_count="10">
+<div id="tbl-nb-mismatch" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="10">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-nb-mismatch-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;5: Mismatches for Naïve-Bayes.
+Table&nbsp;8: Mismatches for Naïve-Bayes.
 </figcaption>
 <div aria-describedby="tbl-nb-mismatch-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="51">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="154">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 9%">
@@ -704,35 +846,188 @@ Table&nbsp;5: Mismatches for Naïve-Bayes.
 </figure>
 </div>
 </div>
+<p>Finally we will be testing the Naive-Bayes model, which is also a relatively simple model that also does not tend to over-fit as much, just to see which model is best. The cross validation scores and time are shown in <a href="#tbl-nb-cv" class="quarto-xref">Table&nbsp;7</a>. We can also see that it performs better than the tree and dummy with less overfit, although nconda ot very consistently, like the logistic regression. As shown from <a href="#fig-nb-cm" class="quarto-xref">Figure&nbsp;8</a>, the confusion metrics is quite similar to the logistic regression, as we can see is not particularly good at identifying hot dog features. From the mismatches in <a href="#tbl-nb-mismatch" class="quarto-xref">Table&nbsp;8</a>, we can also see a similar pattern as the logistic regression model, failing to identify the “obvious” patterns we stated in the beginning.</p>
 </section>
-<section id="model-comparisons" class="level3">
-<h3 class="anchored" data-anchor-id="model-comparisons">Model Comparisons</h3>
-<p>Knowing this, we can compare their scores to determine the model to train. As shown in table 14, we can see a negligible difference between Naïve-Bayes and LR. Yet, to be able to proceed, we will proceed train Naïve-Bayes classifier, as it is also a relatively simple model with slighlty faster fitting time.</p>
-<p>table 14: Comparisons of mean values of scores and times for all models.</p>
+<section id="model-comparisons" class="level2">
+<h2 class="anchored" data-anchor-id="model-comparisons">Model Comparisons</h2>
+<p>As shown in Table x, we can see a negligible difference between Naive-Bayes and Logistic Regression. But we will choose to move forward with the Naive-Bayes classifier, as it is also a relatively simple model with slighlty faster fitting time.</p>
+<p>Table x: Comparisons of mean values of scores and times for all models.</p>
 </section>
-<section id="best-model-hyperparameter-optimisation" class="level3">
-<h3 class="anchored" data-anchor-id="best-model-hyperparameter-optimisation">Best Model Hyperparameter Optimisation</h3>
-<p>Here we will perform the optimisation of our model. Given that we chose the Naïve-Bayes estimator, we will optimise the <code>alpha</code> hyperparameter (which controls the tradeoff between variance and bias of our model), as well as the <code>max_features</code> variable (the actual size of our vocabulary considering the top <code>max_features</code> words) of our <code>CountVectorizer</code>, as this can also play a role in overfitting.</p>
-<p>We are using a randomised approach to test in a wide space, with 500 iterations and a random integer ranging from <span class="math inline">\([5, \text{size of the vocabulary}]\)</span> for <code>max_features</code>, and a loguniform distribution ranging from <span class="math inline">\([0.001, 1000]\)</span> for <code>alpha</code>.</p>
-<p>After this, we will use the best parameters obtained, and train our best model. The best hyperparameters for the best model is shown in table 15.</p>
-<p>Table 15: Best hyperparameters for the best model (Logistic Regression).</p>
-<p>We can observe a slight increase in the validation score, but in order to prevent overfitting on the validation set, we will compare our model with the actual test data:</p>
-<p><strong>insert test score here of 0.714</strong></p>
-<p>The model performs quite similar to the validation score, which likely tells us that it was able to generalise and learn. In order to validate this assumption, we can take a look at the confusion matrix. In figure 9, we can see that, although the model makes good predictions, it still fails to raise the “hot dog alert”. In table 16, we can further see the failed classifications. Save for the first one, which we would even classify as a hot dog stand, it still missed some of the cues we identified at the beginning, meaning this model will probably will encounter this limitations in future predictions.</p>
-<p>Fig. 9: Confusion matrix for the best classifier</p>
-<p>Table 16: Mismatches for best model.</p>
+<section id="best-model-hyperparameter-optimisation" class="level2">
+<h2 class="anchored" data-anchor-id="best-model-hyperparameter-optimisation">Best Model Hyperparameter Optimisation</h2>
+<p>From <a href="#tbl-nb-rscv" class="quarto-xref">Table&nbsp;9</a>, we can observe a slight increase in the validation score compared to before. After evaluating it on the test set, the model ended up with a test score of 0.714, which is not too far off with the validation score of 0.778. However, in <a href="#fig-nb-brcvcm" class="quarto-xref">Figure&nbsp;9</a>, we can see that, although the model makes good predictions, it still fails to raise the “hot dog alert”. In <a href="#tbl-nb-best-mismatch" class="quarto-xref">Table&nbsp;10</a>, we can further see the failed classifications. Save for the first one, which we would even classify as a hot dog stand, it still missed some of the cues we identified at the beginning, meaning this model will probably will encounter this limitations in future predictions.</p>
+<div class="cell" data-execution_count="11">
+<div id="tbl-nb-rscv" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="11">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-nb-rscv-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;9: Randomized search CV results for best Naive-Bayes model.
+</figcaption>
+<div aria-describedby="tbl-nb-rscv-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="155">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 12%">
+<col style="width: 10%">
+<col style="width: 11%">
+<col style="width: 24%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">rank_test_score</th>
+<th style="text-align: right;">mean_test_score</th>
+<th style="text-align: right;">mean_train_score</th>
+<th style="text-align: right;">mean_fit_time</th>
+<th style="text-align: right;">mean_score_time</th>
+<th style="text-align: right;">param_countvectorizer__max_features</th>
+<th style="text-align: right;">param_bernoullinb__alpha</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.779487</td>
+<td style="text-align: right;">0.809569</td>
+<td style="text-align: right;">0.00423422</td>
+<td style="text-align: right;">0.00473599</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: right;">1.19649</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.779487</td>
+<td style="text-align: right;">0.809569</td>
+<td style="text-align: right;">0.00100851</td>
+<td style="text-align: right;">0.000464725</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">0.810249</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.779487</td>
+<td style="text-align: right;">0.809569</td>
+<td style="text-align: right;">0.00114179</td>
+<td style="text-align: right;">0.000472879</td>
+<td style="text-align: right;">89</td>
+<td style="text-align: right;">1.14057</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.779487</td>
+<td style="text-align: right;">0.809569</td>
+<td style="text-align: right;">0.00127273</td>
+<td style="text-align: right;">0.000595093</td>
+<td style="text-align: right;">87</td>
+<td style="text-align: right;">0.618761</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.779487</td>
+<td style="text-align: right;">0.809569</td>
+<td style="text-align: right;">0.00523024</td>
+<td style="text-align: right;">0.00114841</td>
+<td style="text-align: right;">84</td>
+<td style="text-align: right;">1.24142</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<div id="fig-nb-brcvcm" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-nb-brcvcm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../results/figures/NaiveBayes/best_rcv_model_test_confusion_matrix.png" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nb-brcvcm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: Confusion matrix for the best Naïve-Bayes classifier.
+</figcaption>
+</figure>
+</div>
+<div class="cell" data-execution_count="12">
+<div id="tbl-nb-best-mismatch" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="12">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-nb-best-mismatch-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;10: Confusion matrix for the best Naive-Bayes model.
+</figcaption>
+<div aria-describedby="tbl-nb-best-mismatch-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="156">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">y</th>
+<th style="text-align: left;">y_hat</th>
+<th style="text-align: right;">probabilities</th>
+<th style="text-align: left;">x</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">True</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">0.106586</td>
+<td style="text-align: left;">Mr.&nbsp;Tube Steak</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">True</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">0.23935</td>
+<td style="text-align: left;">nan</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">True</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">0.23935</td>
+<td style="text-align: left;">nan</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">True</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">0.23935</td>
+<td style="text-align: left;">nan</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">True</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">0.23935</td>
+<td style="text-align: left;">nan</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">True</td>
+<td style="text-align: left;">False</td>
+<td style="text-align: right;">0.23935</td>
+<td style="text-align: left;">nan</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">False</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: right;">0.52339</td>
+<td style="text-align: left;">Lemon Sea</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">False</td>
+<td style="text-align: left;">True</td>
+<td style="text-align: right;">0.810592</td>
+<td style="text-align: left;">Mo’s Hot Dog Plus</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
 </section>
 </section>
 <section id="discussion" class="level1">
 <h1>Discussion</h1>
-<p>We compared the performance of 4 different models (Dummy, Decision Tree, Logistic Regression, and Naive-Bayes), and we proceeded with Naive-Bayes, therefore, we chose Naive-Bayes to move forward with hyperparameter tuning. We used RandomizedSearchCV to identify the best hyperparameter values for Max Features and alpha, and evaluated the best model with the test set.</p>
-<p>As we saw, there are several limitations to what a count vectorizer and a binary classification can perform. The relationships that we found within our variables are probably not linear, as there are some cases where the biases of our more intelligent classifiers, such as the Bayesian and the logistic regression, would favor into classifying something as not hotdog, when we noticed from our EDA that it was those specific cases of no name where the model should have predicted that that was hotdog stand. This makes for a model that will be particularly good at identifying the majority class, which pretty much makes it comparable to a dummy. And thus, we observed the limitations of of our current estimators.</p>
-<p>Now, depending on the context of our problem, we may lean in favour of having a model that is really good at predicting when something is not a hotdog, versus wanting a model that is really good at predicting when something is a hotdog.</p>
-<p>Let’s say we have someone who doesn’t really like hot dogs that much. We would prefer a model that probably outputs more consistently or classifies non-hot dog places as non-hot dog places where this default probably like opens up possibilities for someone looking for options that are likely not hot dog related. And it is not too terrible if hot dog place slides in given that it is the fewer of the bunch.</p>
-<p>For that particular case, our model probably is the one fitting better into that narrative as it is consistent enough to determining or correctly classifying the null class even though if it’s not as good as classifying the positive class.</p>
-<p>Now, in the context of someone really craving a hot dog and wanting to be very sure that that is a hot dog place, then probably the best model that we trained will not fit into that description as much, since it’s not particularly good into predicting a class. For that case, it would have been better to train probably a decision tree, which we saw had much higher bias into identifying the hot dog class.</p>
-<p>A test accuracy of 0.71 shows that our model is still a work in progress, but it shows promising results from the confusion matrix, where it only has 1 FP. There are also 6 FN, as that is a byproduct of how the model learned the patterns.</p>
-<p>Some challenges in the data set are the size. It is a small dataset with only ~90 entries. Another challenge is the imbalance of classes. It would be ideal if each class would represent roughly 50–50% of the samples. We believe that the imbalance was not severe, so we didn’t make any adjustments. In the future, we can take the argument “class_weight” into account during hyperparameter tuning for a model that supports it.</p>
+<p>As we saw, there are several limitations to what a Count Vectorizer and a binary classification can perform. The relationships that we found within our variables may not linear, as there are some cases where the biases of our more intelligent classifiers, such as the Bayesian and the logistic regression, would favor into classifying something as not hotdog, when we noticed from our EDA that it was those specific cases of no name where the model should have predicted that that was hotdog stand. This makes for a model that will be particularly good at identifying the majority class, which pretty much makes it comparable to a dummy. And thus, from the limitations of our current estimators, our model is not ready to be used yet for prediction.</p>
+<p>Now, depending on the context of our problem, we may lean in favour of having a model that is really good at predicting when something is not a hotdog, versus wanting a model that is really good at predicting when something is a hotdog. Let’s say we have someone who doesn’t really like hot dogs that much. We would prefer a model that probably outputs more consistently or classifies non-hot dog places as non-hot dog places where this default probably like opens up possibilities for someone looking for options that are likely not hot dog related. And it is not too terrible if hot dog place slides in given that it is the fewer of the bunch. For that particular case, our model probably is the one fitting better into that narrative as it is consistent enough to determining or correctly classifying the null class even though if it’s not as good as classifying the positive class. Now, in the context of someone really craving a hot dog and wanting to be very sure that that is a hot dog place, then probably the best model that we trained will not fit into that description as much, since it’s not particularly good into predicting a class. For that case, it would have been better to train probably a decision tree, which we saw had much higher bias into identifying the hot dog class.</p>
+<p>A test accuracy of 0.71 shows that our model is still a work in progress, but it shows promising results from the confusion matrix, where it only has 1 FP. There are also 6 FN, as that is a byproduct of how the model learned the patterns. Some challenges in the data set include the size, it is a small dataset with only around 90 entries. Another challenge is the imbalance of classes. It would be ideal if each class would represent roughly 50–50% of the samples. We believe that the imbalance was not severe, so we didn’t make any adjustments. In the future, we can take the argument “class_weight” into account during hyperparameter tuning for a model that supports it.</p>
 <p>Finally, we could also add for future iterations, or as a different research question, whether an SVM would perform better given the conditions we have mentioned. It is likely that a nonlinear model will likely fare better since we have found some instances where the natural bias of logistic regression and Naïve-Bayes have pushed the model to incorrectly classify some of the examples.</p>
 </section>
 <section id="references" class="level1 unnumbered">
