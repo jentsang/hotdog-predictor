@@ -670,7 +670,7 @@ class TreeModel(ActualModel):
         super().__init__(model_name = "DecisionTree", **kwargs)
 
         self.build_pipeline()
-        self.pipeline.named_steps["DecisionTree"].set_params(random_state=kwargs["random_state"])
+        self.pipeline.named_steps["decisiontreeclassifier"].set_params(random_state=kwargs["random_state"])
 
         return None
     
