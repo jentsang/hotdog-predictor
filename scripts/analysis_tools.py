@@ -838,10 +838,10 @@ class ActualModel(BOWModel):
         data_dict: dict = {
             "y": self.y_test.to_list(),
             "y_hat": list(self.best_model.predict(self.X_test)),
-            "probabilities": list(self.best_model.predict_proba(self.X_test)),
+            "probabilities": list(self.best_model.predict_proba(self.X_test)[:, 1]),
             "x": self.X_test.to_list(),
         }
-    
+    # THE FIX: Select only the probability for the positive class (index 1)
         df: pd.DataFrame = pd.DataFrame(data_dict)
 
         df[df["y"] != df["y_hat"]].sort_values('probabilities').to_csv(
