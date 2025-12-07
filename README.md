@@ -84,22 +84,16 @@ Alternatively, you can create the environment directly from `environment.yml`:
 If you want to run the docker image of this repo, you can instead just open `Docker Desktop`, and then in a terminal run:
 
 ```bash
-docker pull jentsang/hotdog-predictor
+docker pull jentsang/hotdog-predictor:sha-561dde5
 ```
 
 And once the image is pulled, you can execute:
 
 ```bash
-docker run --rm -it -p 8888:8888 jentsang/hotdog-predictor
+docker compose up
 ```
 
-Or **IF you are running the repository on Intel x86**, you can also use the `docker-compose.yml` file available in the root of the repository by running:
-
-```bash
-docker-compose up
-```
-
-(Do not forget to close the container by using `Ctrl+C` and typing `docker-compose rm` into the terminal)
+(Do not forget to close the container after finishing by using `Ctrl+C` and typing `docker compose rm` into the terminal)
 
 To run the analysis you can just type:
 
@@ -107,29 +101,131 @@ To run the analysis you can just type:
 
 In your browser (make sure there are no other instances of jupyterlab open)
 
-Or if you installed and executed the environment execute `jupyter lab` in the terminal by typing:
-
-```bash
-jupyter lab
-```
 
 Then, in JupyterLab, open `notebooks/dog_or_not.ipynb` and run the cells in order to reproduce the analysis.
 
 Next, under the "Kernel" menu click "Restart Kernel and Run All Cells...".
 
+
+## Running the scripts
+
+The full workflow can be run from the command line using the scripts in the scripts/ directory.
+From the root of the repository, run the following commands in order (either in your local conda environment or inside the Docker container):
+
+1. Download the data:
+
+``` bash
+python scripts/download_data.py \
+  --source 'https://opendata.vancouver.ca/api/explore/v2.1/catalog/datasets/food-vendors/exports/csv?lang=en&timezone=America%2FLos_Angeles&use_labels=true&delimiter=%3B' \
+  --out-file data/raw/food_vendors_raw.csv
+
+```
+
+2. Prepare/split the data
+
+``` bash
+python scripts/prepare_data.py \
+  --input-file data/raw/food_vendors_raw.csv \
+  --train-out data/processed/vendors_train.csv \
+  --test-out data/processed/vendors_test.csv \
+  --train-size 0.7 \
+  --seed 522
+```
+
+3. Exploratory Data Analysis (EDA)
+
+``` bash
+python scripts/eda.py \
+  --training-data data/processed/vendors_train.csv \
+  --plot-to results/figures/EDA
+```
+
+4. Dummy Baseline Model
+
+``` bash
+python scripts/dummy_analysis.py \
+  --training-data data/processed/vendors_train.csv \
+  --testing-data data/processed/vendors_test.csv \
+  --tables-to results/tables/ \
+  --seed 522
+```
+
+5. Decision Tree Model
+
+``` bash
+python scripts/decisiontree_analysis.py \
+  --training-data data/processed/vendors_train.csv \
+  --testing-data data/processed/vendors_test.csv \
+  --figures-to results/figures/ \
+  --tables-to results/tables/ \
+  --model-to results/models/ \
+  --seed 522
+```
+
+6. Logistic Regression Model
+
+``` bash
+python scripts/logistic_regression_analysis.py \
+  --training-data data/processed/vendors_train.csv \
+  --testing-data data/processed/vendors_test.csv \
+  --figures-to results/figures/ \
+  --tables-to results/tables/ \
+  --model-to results/models/ \
+  --seed 522
+```
+
+7. Bayesian Model
+
+``` bash
+python scripts/bayesian_analysis.py \
+  --training-data data/processed/vendors_train.csv \
+  --testing-data data/processed/vendors_test.csv \
+  --figures-to results/figures/ \
+  --tables-to results/tables/ \
+  --model-to results/models/ \
+  --seed 522
+```
+
+8. Compare models
+
+``` bash
+python scripts/compare_models.py \
+  --table-dir=results/tables \
+  --output-dir=results/tables \
+  --param=mean
+```
+
+9. Bayesian evaluation
+
+``` bash
+python scripts/bayesian_evaluation.py \
+  --training-data data/processed/vendors_train.csv \
+  --testing-data data/processed/vendors_test.csv \
+  --figures-to results/figures/ \
+  --tables-to results/tables/ \
+  --model-to results/models/ \
+  --seed 522
+```
+
+
 ## Dependencies
 
 The main dependencies needed to run the analysis (as specified in environment.yml) are:
 
-- python 3.11
-- conda-lock 3.0.4
-- scikit-learn 1.7.2
-- pandas 2.3.3
-- jupyterlab 4.4.10
-- altair 6.0.0
-- pip 25.3
+- python=3.11
+- conda-lock=3.0.4
+- scikit-learn=1.7.2
+- pandas=2.3.3
+- jupyterlab=4.4.10
+- altair=6.0.0
+- matplotlib=3.10.7
+- pip=25.3
+- pandera=0.26.1
+- click=8.3.1
+- vl-convert-python=1.8.0
+- quarto=1.8.26
 - pip:
-    - mglearn 0.2.0
+    - mglearn==0.2.0
 
 For the complete and authoritative list of packages and versions, please see environment.yml and conda-lock.yml.
 

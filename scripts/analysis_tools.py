@@ -13,6 +13,7 @@ import numpy as np
 import pandas as pd
 import altair as alt
 import pickle
+import json
 import matplotlib.pyplot as plt
 from sklearn.model_selection import (
     train_test_split, cross_validate,
@@ -551,6 +552,9 @@ class ActualModel(BOWModel):
         best model and associated results on the instance. The best
         estimator is also serialized to
         ``self.model_output_path + f'/best_{self.model_name}.pickle'``.
+        Additionally, the best score, best parameters, and the
+        cross-validation results are serialized into a JSON file in the
+        same directory.
 
         Parameters
         ----------
@@ -592,12 +596,24 @@ class ActualModel(BOWModel):
 
         self.best_model: BaseEstimator = self.random_search.best_estimator_
 
+        results_dict = {
+            'best_score': self.random_search.best_score_,
+            'best_params': self.random_search.best_params_,
+            'rcv_results': self.random_search.cv_results_.to_dict() 
+        }
+
+        json_path = self.model_output_path + f'{self.model_name}_random_search_results.json'
+        with open(json_path, 'w') as json_file:
+            json.dump(results_dict, json_file, indent=4)
+
         with open(self.model_output_path + f'/best_{self.model_name}.pickle', 'wb') as f:
             pickle.dump(self.best_model, f)
         
         self.best_score: float = self.random_search.best_score_
         self.best_params: dict = self.random_search.best_params_
         self.rcv_results: pd.DataFrame = pd.DataFrame(self.random_search.cv_results_)
+
+
 
         return None
     
@@ -921,7 +937,8 @@ class TreeModel(ActualModel):
     
     def tree_depth(self) -> int:
         """
-        Return the maximum depth of the decision tree.
+        Return the maximum depth of the decision tree, and store it 
+        in the model directory.
 
         Returns
         -------
@@ -935,6 +952,14 @@ class TreeModel(ActualModel):
         """
 
         self.check_if_fitted()
+
+        max_depth_dict = {
+            "max_depth": self.pipeline["decisiontreeclassifier"].tree_.max_depth
+        }
+
+        json_path = self.model_output_path + f'{self.model_name}_max_depth.json'
+        with open(json_path, 'w') as json_file:
+            json.dump(max_depth_dict, json_file, indent=4)
 
         return self.pipeline["decisiontreeclassifier"].tree_.max_depth
     
@@ -1002,7 +1027,8 @@ class LRModel(ActualModel):
     
     def lr_intercept(self) -> float:
         """
-        Return the intercept term of the logistic regression model.
+        Return the intercept term of the logistic regression model, and
+        stores it as a JSON in the model directory.
 
         Returns
         -------
@@ -1016,6 +1042,14 @@ class LRModel(ActualModel):
         """
 
         self.check_if_fitted()
+
+        lr_intercept_dict = {
+            "intercept": self.pipeline.named_steps["logisticregression"].intercept_[0]
+        }
+
+        json_path = self.model_output_path + f'{self.model_name}_intercept.json'
+        with open(json_path, 'w') as json_file:
+            json.dump(lr_intercept_dict, json_file, indent=4)
 
         return self.pipeline.named_steps["logisticregression"].intercept_[0]
     
