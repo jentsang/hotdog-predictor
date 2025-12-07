@@ -112,6 +112,14 @@ Next, under the "Kernel" menu click "Restart Kernel and Run All Cells...".
 The full workflow can be run from the command line using the scripts in the scripts/ directory.
 From the root of the repository, run the following commands in order (either in your local conda environment or inside the Docker container):
 
+Before anything, make sure you are in the root by performing:
+
+```bash
+pwd
+```
+
+If you are not in the root, you will need to change the relative directory of the paths presented below.
+
 1. Download the data:
 
 ``` bash

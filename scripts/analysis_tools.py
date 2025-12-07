@@ -598,8 +598,7 @@ class ActualModel(BOWModel):
 
         results_dict = {
             'best_score': self.random_search.best_score_,
-            'best_params': self.random_search.best_params_,
-            'rcv_results': self.random_search.cv_results_.to_dict() 
+            'best_params': self.random_search.best_params_
         }
 
         json_path = self.model_output_path + f'{self.model_name}_random_search_results.json'
