@@ -125,7 +125,7 @@ def main(training_data, testing_data, figures_to, tables_to, model_to, seed) -> 
 
     lr.store_most_discriminant_features()
 
-    print("Logistic Regression documents have been updated")
+    click.echo("Logistic Regression documents have been updated")
 
     return None
 

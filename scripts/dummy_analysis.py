@@ -12,18 +12,20 @@ from pandas import read_csv, DataFrame
 from analysis_tools import DummyModel 
 
 @click.command()
-@click.option('--training-data', type=str, help="Path to training data")
-@click.option('--testing-data', type=str, help="Path to testing data")
-@click.option('--tables-to', type=str, help="Path to where tables will be saved")
-def main(training_data, testing_data,tables_to) -> None:
+@click.option('--training-data', type=str, help="Path to training data", required=True)
+@click.option('--testing-data', type=str, help="Path to testing data", required=True)
+@click.option('--tables-to', type=str, help="Path to where tables will be saved", required=True)
+@click.option('--seed', type=int, help="Random seed", default=522)
+def main(training_data, testing_data, tables_to, seed) -> None:
     """
-    Run the end-to-end Dummy text classification pipeline.
+    Run the end-to-end dummy text classification pipeline.
     
     The command reads training and testing CSV files, extracts the
     ``BUSINESS_NAME`` column as text features and ``is_hotdog`` as the
     target, initializes a :class:`analysis_tools.DummyModel`, and
-    the cross validation scores. As this is just a dummy baseline model
-    just the scores are exported with no other subsequent figures generated.
+    exports cross-validation scores for this simple baseline model.
+    As this is just a dummy classifier, no figures or additional
+    evaluation artifacts are generated.
 
     Parameters
     ----------
@@ -34,8 +36,10 @@ def main(training_data, testing_data,tables_to) -> None:
         Path to the CSV file containing the test data. The file must
         include at least the columns ``BUSINESS_NAME`` and ``is_hotdog``.
     tables_to : str
-        Directory where generated tables (e.g., cross-validation scores) 
+        Directory where generated tables (e.g., cross-validation scores)
         will be saved.
+    seed : int
+        Random seed used when initializing the underlying model.
 
     Returns
     -------
@@ -48,13 +52,13 @@ def main(training_data, testing_data,tables_to) -> None:
     .. code-block:: bash
 
        python dummy_analysis.py \\
-           --training-data=../data/processed/train.csv \\
-           --testing-data=../data/processed/test.csv \\
-           --tables-to=../results/tables/ 
+           --training-data=../data/processed/vendors_train.csv \\
+           --testing-data=../data/processed/vendors_test.csv \\
+           --tables-to=../results/tables/ \\
+           --seed=522
     """
 
-    ## Here we are extracting the data from the source and filling na's with empty strings
-
+    # Extract data from the source and fill NA's with empty strings
     train_data = read_csv(training_data)
     test_data = read_csv(testing_data)
 
@@ -64,20 +68,24 @@ def main(training_data, testing_data,tables_to) -> None:
     X_test = test_data["BUSINESS_NAME"].fillna('')
     y_test = test_data["is_hotdog"]
 
-    ## Here we are declaring the model
-
+    # Declare the dummy baseline model
     dummy = DummyModel(
         X_train=X_train,
         y_train=y_train,
         X_test=X_test,
         y_test=y_test,
+        random_state=seed,
         table_output_directory=tables_to,
     )
 
+    # Export raw and aggregated cross-validation scores
     dummy.store_raw_cv_scores()
     dummy.store_agg_cv_scores()
 
-    click.echo(f"Dummy tables have been generated")
+    click.echo("Dummy cross-validation tables have been generated")
+
+    return None
+
 
 if __name__ == "__main__":
     main()
