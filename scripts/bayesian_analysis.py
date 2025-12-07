@@ -17,8 +17,9 @@ from pandas import read_csv, DataFrame, Series
 @click.option('--testing-data', type=str, help="Path to testing data", required=True)
 @click.option('--figures-to', type=str, help="Path to where figures will be saved", required=True)
 @click.option('--tables-to', type=str, help="Path to where tables will be saved", required=True)
+@click.option('--model-to', type=str, help="Path to where model will be saved", required=True)
 @click.option('--seed', type=int, help="Random seed", default=522)
-def main(training_data, testing_data, figures_to, tables_to, seed) -> None:
+def main(training_data, testing_data, figures_to, tables_to, model_to, seed) -> None:
     """
     Run the end-to-end Naive Bayes text classification pipeline.
 
@@ -42,6 +43,9 @@ def main(training_data, testing_data, figures_to, tables_to, seed) -> None:
     tables_to : str
         Directory where generated tables (e.g., cross-validation scores
         and misclassified examples) will be saved.
+    model_to : str
+        Directory where the fitted logistic regression model and related
+        serialized objects will be saved.
     seed : int
         Random seed used when initializing the underlying model.
 
@@ -60,6 +64,7 @@ def main(training_data, testing_data, figures_to, tables_to, seed) -> None:
            --testing-data=../data/processed/vendors_test.csv \\
            --figures-to=../results/figures/ \\
            --tables-to=../results/tables/ \\
+           --model-to=../results/models/ \\
            --seed=522
 
     When called programmatically:
@@ -92,6 +97,7 @@ def main(training_data, testing_data, figures_to, tables_to, seed) -> None:
         random_state=seed,
         table_output_directory=tables_to,
         figure_output_directory=figures_to,
+        model_output_directory=model_to
     )
 
     # Extract cross-validation scores

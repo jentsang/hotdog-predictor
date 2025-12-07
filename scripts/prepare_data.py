@@ -11,9 +11,9 @@ This script:
 
 Usage example:
 
-    python scripts/prepare_data.py \
-        --input-file data/raw/food_vendors_raw.csv \
-        --train-out data/processed/vendors_train.csv \
+    python scripts/prepare_data.py \\
+        --input-file data/raw/food_vendors_raw.csv \\
+        --train-out data/processed/vendors_train.csv \\
         --test-out data/processed/vendors_test.csv
 """
 
@@ -132,7 +132,7 @@ def main(input_file, train_out, test_out, train_size, seed) -> None:
     food_vendors.columns = food_vendors.columns.str.strip()
 
     # --- Basic column checks -------------------------------------------------
-    required_columns = ["BUSINESS_NAME", "DESCRIPTION"]
+    required_columns = ["KEY", "BUSINESS_NAME", "DESCRIPTION"]
     missing = [col for col in required_columns if col not in food_vendors.columns]
 
     if missing:
@@ -142,7 +142,7 @@ def main(input_file, train_out, test_out, train_size, seed) -> None:
         )
 
     # --- Keep only columns needed for our analysis ---------------------------
-    clean_food = food_vendors[required_columns].copy()
+    clean_food = food_vendors[required_columns].sort_values("KEY").copy()
 
     # Binary target: True if description is exactly "Hot Dogs"
     clean_food["is_hotdog"] = clean_food["DESCRIPTION"] == "Hot Dogs"
