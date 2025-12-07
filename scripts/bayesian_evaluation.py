@@ -1,5 +1,5 @@
 """
-Command-line entry point for training and analyzing a Bayesian 
+Command-line entry point for evaluating the best Bayesian 
 bag-of-words classifier.
 
 This script loads training and testing data, fits an
@@ -10,6 +10,7 @@ confusion matrices, and coefficient tables. It is intended to be run from the co
 import click
 from analysis_tools import NaiveBayesModel ## Import the Naive Bayes Model class
 from pandas import read_csv, DataFrame, Series
+from scipy.stats import loguniform, randint
 
 
 @click.command()
@@ -26,7 +27,7 @@ def main(training_data, testing_data, figures_to, tables_to, model_to, seed) -> 
     The command reads training and testing CSV files, extracts the
     ``BUSINESS_NAME`` column as text features and ``is_hotdog`` as the
     target, initializes an :class:`analysis_tools.NaiveBayesModel`, and
-    generates evaluation artifacts such as cross-validation scores,
+    generates evaluation artifacts such as randomized search results,
     confusion matrices, and tables of misclassified examples.
 
     Parameters
@@ -41,7 +42,7 @@ def main(training_data, testing_data, figures_to, tables_to, model_to, seed) -> 
         Directory where generated figures (e.g., confusion matrices) will
         be saved.
     tables_to : str
-        Directory where generated tables (e.g., cross-validation scores
+        Directory where generated tables (e.g., randomized search results
         and misclassified examples) will be saved.
     model_to : str
         Directory where the fitted bayesian model and related
@@ -59,7 +60,7 @@ def main(training_data, testing_data, figures_to, tables_to, model_to, seed) -> 
 
     .. code-block:: bash
 
-       python bayesian_analysis.py \\
+       python bayesian_evaluation.py \\
            --training-data=../data/processed/vendors_train.csv \\
            --testing-data=../data/processed/vendors_test.csv \\
            --figures-to=../results/figures/ \\
@@ -100,15 +101,20 @@ def main(training_data, testing_data, figures_to, tables_to, model_to, seed) -> 
         model_output_directory=model_to
     )
 
-    # Extract cross-validation scores
-    nb.store_raw_cv_scores()
-    nb.store_agg_cv_scores()
+    param_grid = {
+        "countvectorizer__max_features": randint(5, 95),
+        "bernoullinb__alpha": loguniform(1e-2, 1e2),
+    }
+    
+    # Perform and extract randomized search results
+    nb.fit_randomized_CV(param_grid)
+    nb.store_rcv_scores()
 
     # Extract confusion matrix and model mismatches
-    nb.store_confusion_matrix()
-    nb.store_model_mismatches()
+    nb.store_best_rcv_confusion_matrix()
+    nb.store_best_rcv_model_mismatches()
 
-    click.echo("Naive Bayes documents have been updated")
+    click.echo("Naive Bayes evaluation documents have been updated")
 
     return None
 
