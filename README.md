@@ -6,58 +6,75 @@ Demo of a data analysis project for DSCI 522 (Data Science Workflows), a course 
 
 ## About
 
-In this project, we use the City of Vancouver “Food Vendors” open dataset to explore where different kinds of food vendors operate in Vancouver and whether we can automatically identify hot-dog vendors.
+In this project, we use the City of Vancouver **“Food Vendors”** open dataset to explore where different kinds of food vendors operate in Vancouver and whether we can automatically identify hot-dog vendors.
 
 Our main research question is:
 
 > Can we predict whether a food vendor is a hot-dog vendor or not?
 
-For Milestone 1, we construct a binary target variable is_hotdog using the DESCRIPTION column in the data: it is True when DESCRIPTION is "Hot Dogs" and False otherwise. We then use the vendor’s BUSINESS_NAME as the main feature and train text-based classifiers to predict this label. As the project develops, we may also incorporate other attributes as features if they improve the model and remain easy to interpret.
+We construct a binary target variable `is_hotdog` using the `DESCRIPTION` column: it is `True` when `DESCRIPTION` is `"Hot Dogs"` and `False` otherwise. Our main feature is the vendor’s `BUSINESS_NAME`, which we use as text input to a set of classification models.
 
-The purpose of this project is to:
+The goals of this project are to:
 
-- practice building and evaluating a simple binary classifier on real open data,  
+- build and compare simple binary classifiers on real open data,  
 - work with text fields (business names) to construct a meaningful target variable,  
-- follow a clear and reproducible workflow that other users can re-run.
+- follow a clear and reproducible workflow using scripts, Quarto, Docker, and GitHub.
 
-In Milestone 1 we compare several models (Dummy, Decision Tree, Logistic Regression, and Naïve Bayes) and find that a tuned Naïve Bayes classifier performs best, achieving a test accuracy of about 0.79 with very few false positives.
-
-In Milestone 2 we added data validation for the column and file names, as well as checking for the data types in our columns. Additionally, we created a Docker image for this project to be run in any device with the same environment and libraries as we have.
+We compare several models (Dummy baseline, Decision Tree, Logistic Regression, Naïve Bayes, and a Bayesian model) using cross-validation and a held-out test set. In our current results, a tuned Naïve Bayes classifier performs best, with test accuracy around 0.79 and relatively few false positives.
 
 ## Data
 
 The data set used in this project is the **“Food Vendors”** dataset from the City of Vancouver Open Data Portal:
 
-- Dataset: Food Vendors  
-- Provider: City of Vancouver Open Data Portal  
-- URL: https://opendata.vancouver.ca/explore/dataset/food-vendors/table/  
+- **Dataset:** Food Vendors  
+- **Provider:** City of Vancouver Open Data Portal  
+- **URL:** https://opendata.vancouver.ca/explore/dataset/food-vendors/table/  
 
-Each row in the dataset represents a food vendor and includes information such as the business name, description, and location. In this project, we derive the binary target is_hotdog from the DESCRIPTION column (“Hot Dogs” vs other descriptions) and use the BUSINESS_NAME as the main predictor in our models.
+Each row in the dataset represents a food vendor and includes information such as the business name, food description, location, and geographic coordinates. For our analysis we primarily use:
+
+- `BUSINESS_NAME` — the name of the vendor (feature)  
+- `DESCRIPTION` — the category of food offered (used to create the `is_hotdog` target)
+
+Other columns (e.g., `LOCATION`, `GEO_LOCALAREA`, coordinates) remain in the raw data but are not used directly in the final models.
 
 The data is published under the **Open Government Licence – Vancouver**.  
 For details, see: https://opendata.vancouver.ca/pages/licence/
 
 ## Repository structure
 
-For Milestone 1, the repository includes the following:
+This repository is organized as follows:
 
 - `README.md` – project overview and instructions  
 - `CODE_OF_CONDUCT.md` – project code of conduct  
 - `CONTRIBUTING.md` – guidelines for contributing to the project  
-- `data/` – folder for the Food Vendors dataset and any derived data files  
-- `notebooks/dog_or_not.ipynb` – main analysis notebook (source)
-- `notebooks/dog_or_not.html` – rendered HTML report
-- `notebooks/dog_or_not.pdf` – rendered PDF report
-- `environment.yml` – base conda environment specification (with pinned versions) 
-- `conda-lock.yml` – conda lock file that pins exact package versions for reproducibility
 - `LICENSE` – licenses for the code, report, and data  
+
+- `data/`  
+  - `raw/` – raw Food Vendors data downloaded from the City of Vancouver  
+  - `processed/` – cleaned and split data used for modelling  
+
+- `notebooks/` – development / exploratory Jupyter notebooks  
+
+- `reports/` – final Quarto report and outputs  
+  - `dog_or_not_report.qmd` – source report  
+  - `dog_or_not_report.html`, `dog_or_not_report.pdf` – rendered reports  
+
+- `scripts/` – analysis pipeline scripts (download data, prepare data, EDA, models, evaluation)  
+
+- `results/` – generated figures, tables, and saved models  
+
+- `.github/workflows/` – GitHub Actions workflows for building the Docker image and running checks  
+
+- `environment.yml`, `conda-lock.yml`, `conda-linux-64.lock` – reproducible conda environment specifications  
+- `Dockerfile`, `docker-compose.yml` – Docker image and compose configuration
 
 ## Report
 
-For Milestone 1, the main analysis and report are contained in:
-- source notebook: [`notebooks/dog_or_not.ipynb`](notebooks/dog_or_not.ipynb)
-- rendered HTML report: [`notebooks/dog_or_not.html`](notebooks/dog_or_not.html)
-- rendered PDF report: [`notebooks/dog_or_not.pdf`](notebooks/dog_or_not.pdf)
+The final report for this milestone is available in the `reports/` folder:
+
+- HTML: [dog_or_not_report.html](reports/dog_or_not_report.html)  
+- PDF:  [dog_or_not_report.pdf](reports/dog_or_not_report.pdf)
+
 
 ## Usage
 
