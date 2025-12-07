@@ -3,15 +3,12 @@
 # installing the virtual environment with the files provided.
 services:
   hotdog_predictor:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: hotdog_predictor
+    image: jentsang/hotdog-predictor:latest  
     container_name: hotdog_predictor
     ports:
       - "8888:8888"
     volumes:
-      - ./:/workspace
-    working_dir: /workspace
+      - ./:/home/dog_or_not
+    working_dir: /home/dog_or_not
     stdin_open: true
     tty: true
