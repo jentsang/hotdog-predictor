@@ -1,6 +1,10 @@
-# eda.py
-# author: Zaki Aslam 
-# date: 2025-12-01
+"""
+Command-line entry point for generating EDA plots on out training data set.
+
+This script loads training data, generates 3 exploratory data plots 
+and exports the corresponding plots to the results/EDA folder.
+This script is  intended to be run from the command line.
+"""
 
 import os 
 import click
@@ -24,19 +28,19 @@ def main(training_data, plot_to):
     training_data : str
         Path to the CSV file containing the training data (located in data/processed/).
     plot_to: str
-        The directory where our EDA figures will be saved as PNG's (located in results/). 
+        The directory where our EDA figures will be saved as PNG's (located in results/figures/EDA). 
 
     Returns 
     -------
-    A message stating where the plots have been saved. 
+    None 
 
     Examples
     --------
-    From the command line run :
+    From the command line run (assuming you are in ./scripts/):
 
     python scripts/eda.py   
-    --processed-training-data data/processed/vendors_train.csv   
-    --plot-to results/eda
+    --training-data ../data/processed/vendors_train.csv   
+    --plot-to ../results/figures/EDA
     """
     train_data = pd.read_csv(training_data)
 
