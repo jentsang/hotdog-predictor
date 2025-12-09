@@ -40,33 +40,6 @@ Other columns (e.g., `LOCATION`, `GEO_LOCALAREA`, coordinates) remain in the raw
 The data is published under the **Open Government Licence – Vancouver**.  
 For details, see: https://opendata.vancouver.ca/pages/licence/
 
-## Repository structure
-
-This repository is organized as follows:
-
-- `README.md` – project overview and instructions  
-- `CODE_OF_CONDUCT.md` – project code of conduct  
-- `CONTRIBUTING.md` – guidelines for contributing to the project  
-- `LICENSE` – licenses for the code, report, and data  
-
-- `data/`  
-  - `raw/` – raw Food Vendors data downloaded from the City of Vancouver  
-  - `processed/` – cleaned and split data used for modelling  
-
-- `notebooks/` – development / exploratory Jupyter notebooks  
-
-- `reports/` – final Quarto report and outputs  
-  - `dog_or_not_report.qmd` – source report  
-  - `dog_or_not_report.html`, `dog_or_not_report.pdf` – rendered reports  
-
-- `scripts/` – analysis pipeline scripts (download data, prepare data, EDA, models, evaluation)  
-
-- `results/` – generated figures, tables, and saved models  
-
-- `.github/workflows/` – GitHub Actions workflows for building the Docker image and running checks  
-
-- `environment.yml`, `conda-lock.yml`, `conda-linux-64.lock` – reproducible conda environment specifications  
-- `Dockerfile`, `docker-compose.yml` – Docker image and compose configuration
 
 ## Report
 
