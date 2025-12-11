@@ -9,17 +9,21 @@ features. It is intended to be run from the command line.
 """
 
 import click
-from analysis_tools import LRModel ## Import the logistic regression class
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from src.analysis_tools import LRModel ## Import the logistic regression class
 from pandas import read_csv, DataFrame, Series
 
 
 @click.command()
-@click.option('--training-data', type=str, help="Path to training data")
-@click.option('--testing-data', type=str, help="Path to testing data")
-@click.option('--figures-to', type=str, help="Path to where figures will be saved")
-@click.option('--tables-to', type=str, help="Path to where tables will be saved")
+@click.option('--training-data', type=str, help="Path to training data", required=True)
+@click.option('--testing-data', type=str, help="Path to testing data", required=True)
+@click.option('--figures-to', type=str, help="Path to where figures will be saved", required=True)
+@click.option('--tables-to', type=str, help="Path to where tables will be saved", required=True)
+@click.option('--model-to', type=str, help="Path to where the model will be saved", required=True)
 @click.option('--seed', type=int, help="Random seed", default=522)
-def main(training_data, testing_data, figures_to, tables_to, seed) -> None:
+def main(training_data, testing_data, figures_to, tables_to, model_to, seed) -> None:
     """
     Run the end-to-end logistic regression text classification pipeline.
 
@@ -27,7 +31,8 @@ def main(training_data, testing_data, figures_to, tables_to, seed) -> None:
     ``BUSINESS_NAME`` column as text features and ``is_hotdog`` as the
     target, initializes an :class:`analysis_tools.LRModel`, and
     generates evaluation artifacts such as cross-validation scores,
-    confusion matrices, and coefficient summaries.
+    confusion matrices, coefficient summaries, and a serialized model
+    file.
 
     Parameters
     ----------
@@ -43,6 +48,9 @@ def main(training_data, testing_data, figures_to, tables_to, seed) -> None:
     tables_to : str
         Directory where generated tables (e.g., cross-validation scores
         and coefficient tables) will be saved.
+    model_to : str
+        Directory where the fitted logistic regression model and related
+        serialized objects will be saved.
     seed : int
         Random seed used when initializing the underlying model.
 
@@ -54,14 +62,13 @@ def main(training_data, testing_data, figures_to, tables_to, seed) -> None:
     --------
     From the command line (assuming you are in ./scripts/):
 
-    .. code-block:: bash
-
-       python script_name.py \\
-           --training-data=../data/train.csv \\
-           --testing-data=../data/test.csv \\
-           --figures-to=../results/figures/ \\
-           --tables-to=../results/tables/ \\
-           --seed=522
+    $ python logistic_regression_analysis.py \\
+        --training-data=../data/processed/vendors_train.csv \\
+        --testing-data=../data/processed/vendors_test.csv \\
+        --figures-to=../results/figures/ \\
+        --tables-to=../results/tables/ \\
+        --model-to=../results/models/ \\
+        --seed=522
 
     When called programmatically:
 
@@ -70,6 +77,7 @@ def main(training_data, testing_data, figures_to, tables_to, seed) -> None:
     ...     testing_data="data/test.csv",
     ...     figures_to="results/figures/",
     ...     tables_to="results/tables/",
+    ...     model_to="results/models/",
     ...     seed=522,
     ... )
     """
@@ -94,7 +102,8 @@ def main(training_data, testing_data, figures_to, tables_to, seed) -> None:
         y_test=y_test,
         random_state=seed,
         table_output_directory=tables_to,
-        figure_output_directory=figures_to
+        figure_output_directory=figures_to,
+        model_output_directory=model_to
     )
 
     ## Here we are extracting the CV scores
@@ -119,7 +128,7 @@ def main(training_data, testing_data, figures_to, tables_to, seed) -> None:
 
     lr.store_most_discriminant_features()
 
-    print("Logistic Regression documents have been updated")
+    click.echo("Logistic Regression documents have been updated")
 
     return None
 

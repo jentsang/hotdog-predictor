@@ -1,64 +1,64 @@
-BUSINESS_NAME,DESCRIPTION,is_hotdog
-,Hot Dogs,True
-,Hot Dogs,True
-BBKB Kaboom Box,Seafood and Western,False
-Come Arepa,Venezuelan Cuisine,False
-Holy Smokes,Hot Dogs,True
-Eat Chicken Wraps,Wraps and Sandwiches,False
-Chou Chou Crepes,French Crepes,False
-V Dub Dogs,Hot Dogs,True
-Arturo's Mexico To Go,Mexican Cuisine,False
-Mac BBQ,Hot Dogs,True
-,Hot Dogs,True
-,Hot Dogs,True
-Feastro - The Rolling Bistro,Local Meats and Seafood,False
-,Hot Dogs,True
-Mr. Sandwich,Sandwiches,False
-Russett Shack,Potato Based Dishes,False
-Sea Dogs,Hot Dogs,True
-La Bomba Taqueria,Tacos and Fresh Salsas,False
-Commissary Connect,Variety Menu,False
-Japadog,Hot Dogs,True
-,Hot Dogs,True
-Vij's Railway Express,Indian Cuisine,False
-,Hot Dogs,True
-Ali's Hot Dogs,Hot Dogs,True
-,Hot Dogs,True
-The Juice Truck,Juice and Smoothies,False
-The Praguery,Central European Desserts,False
-Soho Road Naan Kebab,Indian Cuisine,False
-Roaming Dragon,Asian Fusion,False
-Meet to Eat,Kosher Israeli,False
-Meet to Eat,Kosher Israeli,False
-Master Chef's Kebab House,Kebabs,False
-The Juice Truck,Juice and Smoothies,False
-,Hot Dogs,True
-Eat Chicken Wraps,Wraps and Sandwiches,False
-Mr. Arancino,Italian Cuisine,False
-Disco Cheetah,Korean,False
-Marimba,Middle Eastern Cuisine,False
-The Fryinig Pan,Fried Chicken Sandwiches,False
-Fat Duck Mobile Eatery,International Comfort Foods,False
-Yokabai,Burgers and Fries,False
-Chickpea,Vegetarian,False
-Actual Oden,Japanese Cuisine,False
-San Juan Family Farm,"Fruit Shakes, Smoothies and Juices",False
-Mr. Shawarma,Middle Eastern Cuisine,False
-Cheesey Does It,Sandwiches,False
-Crab Park Chowdery,Chowders and Soups,False
-Suassy Thai,Thai Cuisine,False
-Tandoori Tikka Dog,Hot Dogs,True
-Van Dog,Western,False
-Le Tigre,Chinese Cuisine,False
-Mr. Shawarma,Shawarma,False
-Japadog,Hot Dogs,True
-Japadog,Hot Dogs,True
-Mum's Grilled Cheese Truck,Grilled Cheese and Soups,False
-,Hot Dogs,True
-Van Dog,Hot Dogs,True
-Van Dog,Hot Dogs,True
-,Hot Dogs,True
-Potato Tornado,Potato Based Dishes,False
-Gourmet Syndicate,Comfort Food,False
-Mogu,Japanese Cuisine,False
-Tacofino,Tacos and Burritos,False
+KEY,BUSINESS_NAME,DESCRIPTION,is_hotdog
+DT37,,Hot Dogs,True
+OD12,,Hot Dogs,True
+GM13,BBKB Kaboom Box,Seafood and Western,False
+C21,Come Arepa,Venezuelan Cuisine,False
+OD03,Holy Smokes,Hot Dogs,True
+DT75,Eat Chicken Wraps,Wraps and Sandwiches,False
+GT02,Chou Chou Crepes,French Crepes,False
+DT47,V Dub Dogs,Hot Dogs,True
+DT57,Arturo's Mexico To Go,Mexican Cuisine,False
+EB01,Mac BBQ,Hot Dogs,True
+GM18,,Hot Dogs,True
+EB05,,Hot Dogs,True
+C9,Feastro - The Rolling Bistro,Local Meats and Seafood,False
+GM03,,Hot Dogs,True
+GM15,Mr. Sandwich,Sandwiches,False
+DT35,Russett Shack,Potato Based Dishes,False
+DT56,Sea Dogs,Hot Dogs,True
+OD06,La Bomba Taqueria,Tacos and Fresh Salsas,False
+DT59,Commissary Connect,Variety Menu,False
+DT26,Japadog,Hot Dogs,True
+GT05,,Hot Dogs,True
+C24,Vij's Railway Express,Indian Cuisine,False
+GT04,,Hot Dogs,True
+DT79,Ali's Hot Dogs,Hot Dogs,True
+OD05,,Hot Dogs,True
+C6,The Juice Truck,Juice and Smoothies,False
+C22,The Praguery,Central European Desserts,False
+GM21,Soho Road Naan Kebab,Indian Cuisine,False
+C25,Roaming Dragon,Asian Fusion,False
+C11,Meet to Eat,Kosher Israeli,False
+DT15,Meet to Eat,Kosher Israeli,False
+GM17,Master Chef's Kebab House,Kebabs,False
+DT41,The Juice Truck,Juice and Smoothies,False
+DT21,,Hot Dogs,True
+DT49,Eat Chicken Wraps,Wraps and Sandwiches,False
+DT67,Mr. Arancino,Italian Cuisine,False
+C13,Disco Cheetah,Korean,False
+DT64,Marimba,Middle Eastern Cuisine,False
+C20,The Fryinig Pan,Fried Chicken Sandwiches,False
+C23,Fat Duck Mobile Eatery,International Comfort Foods,False
+DT31,Yokabai,Burgers and Fries,False
+C12,Chickpea,Vegetarian,False
+DT61,Actual Oden,Japanese Cuisine,False
+EB06,San Juan Family Farm,"Fruit Shakes, Smoothies and Juices",False
+GM16,Mr. Shawarma,Middle Eastern Cuisine,False
+DT42,Cheesey Does It,Sandwiches,False
+GM20,Crab Park Chowdery,Chowders and Soups,False
+DT36,Suassy Thai,Thai Cuisine,False
+DT73,Tandoori Tikka Dog,Hot Dogs,True
+GM04,Van Dog,Western,False
+C17,Le Tigre,Chinese Cuisine,False
+C3,Mr. Shawarma,Shawarma,False
+DT69,Japadog,Hot Dogs,True
+DT52,Japadog,Hot Dogs,True
+C10,Mum's Grilled Cheese Truck,Grilled Cheese and Soups,False
+DT48,,Hot Dogs,True
+GM11,Van Dog,Hot Dogs,True
+DT06,Van Dog,Hot Dogs,True
+DT02,,Hot Dogs,True
+GM10,Potato Tornado,Potato Based Dishes,False
+C8,Gourmet Syndicate,Comfort Food,False
+DT16,Mogu,Japanese Cuisine,False
+C5,Tacofino,Tacos and Burritos,False

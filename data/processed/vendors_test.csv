@@ -1,29 +1,29 @@
-BUSINESS_NAME,DESCRIPTION,is_hotdog
-Mr. Shawarma,Shawarma,False
-,Hot Dogs,True
-Tacofino White Lightening,Tacos and Burritos,False
-Tandoori Tikka Dog,Hot Dogs,True
-Mac BBQ,Hot Dogs,True
-Super Thai,Thai Cuisine,False
-Dim Sum Express,Dim Sum,False
-Commissary Connect,Variety Menu,False
-Aussie Pie Guy,Australian Pies,False
-,Hot Dogs,True
-Mr. Camaron,Drinks and Smoothies,False
-Mr. Tube Steak,Hot Dogs,True
-Vie Niapolotan,Italian Cuisine,False
-Commissary Connect,Variety Menu,False
-,Hot Dogs,True
-Lemon Sea,Lemonade and Crepes,False
-Didi's Greek,Greek Cuisine,False
-Dog Meister,Hot Dogs,True
-The Loving Hut,Vegetarian and Vegan,False
-Mo's Hot Dog Plus,Western,False
-Feastro The Rolling Bistro,Local Meats and Seafood,False
-Roaming Dragon,Asian Fusion,False
-,Hot Dogs,True
-,Hot Dogs,True
-Cazba Express,Kebabs,False
-Brasilian Roots,Brasilian Cuisine,False
-The Reef,Caribbean,False
-Bandidas,Vegan Cuisine,False
+KEY,BUSINESS_NAME,DESCRIPTION,is_hotdog
+DT58,Mr. Shawarma,Shawarma,False
+DT10,,Hot Dogs,True
+C4,Tacofino White Lightening,Tacos and Burritos,False
+DT32,Tandoori Tikka Dog,Hot Dogs,True
+EB07,Mac BBQ,Hot Dogs,True
+C26,Super Thai,Thai Cuisine,False
+DT54,Dim Sum Express,Dim Sum,False
+DT74,Commissary Connect,Variety Menu,False
+C18,Aussie Pie Guy,Australian Pies,False
+DT13,,Hot Dogs,True
+DT05,Mr. Camaron,Drinks and Smoothies,False
+DT01,Mr. Tube Steak,Hot Dogs,True
+C1,Vie Niapolotan,Italian Cuisine,False
+DT70,Commissary Connect,Variety Menu,False
+DT38,,Hot Dogs,True
+EB03,Lemon Sea,Lemonade and Crepes,False
+DT71,Didi's Greek,Greek Cuisine,False
+OD18,Dog Meister,Hot Dogs,True
+DT72,The Loving Hut,Vegetarian and Vegan,False
+DT39,Mo's Hot Dog Plus,Western,False
+C16,Feastro The Rolling Bistro,Local Meats and Seafood,False
+C7,Roaming Dragon,Asian Fusion,False
+GM05,,Hot Dogs,True
+EB04,,Hot Dogs,True
+DT40,Cazba Express,Kebabs,False
+C14,Brasilian Roots,Brasilian Cuisine,False
+C19,The Reef,Caribbean,False
+C15,Bandidas,Vegan Cuisine,False

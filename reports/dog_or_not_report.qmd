@@ -1,0 +1,233 @@
+---
+title: Predicting food specialization from a food vendor's name
+subtitle: A comprehensive classifier analysis on the association of food vendor names with their descriptions
+author: "Zaki Aslam, Hector Palafox Prieto, Jennifer Tsang, & Samrawit Mezgebo Tsegay"
+jupyter: python3
+date: "2025/12/07"
+format: 
+    html:
+        toc: true
+        toc-depth: 3
+    pdf:
+        toc: true
+        toc-depth: 3
+bibliography: references.bib
+execute:
+  echo: false
+  warning: false
+editor: source
+---
+
+```{python}
+import numpy as np
+import pandas as pd
+from IPython.display import Markdown, display
+from tabulate import tabulate
+import pickle
+import json
+```
+
+```{python}
+# import models
+with open('../results/models/DecisionTree/DecisionTree.pickle', 'rb') as dt_model:
+    dt_fit = pickle.load(dt_model)
+
+with open('../results/models/LogisticRegression/LogisticRegression.pickle', 'rb') as lr_model:
+    lr_fit = pickle.load(lr_model)
+
+with open('../results/models/NaiveBayes/best_NaiveBayes.pickle', 'rb') as best_nb_model:
+    best_nb = pickle.load(best_nb_model)
+```
+
+# Summary
+
+In this project, we used decision trees, logistic regression, and a Naive Bayes classifier to identify whether or not a food vendor sells hot dogs via their name. We trained each model individually using a cross-validation setup, and we compared the scores of the accuracy in order to determine a model to train and to compare to the test data. The model we chose, finally, was the Naive Bayes, as it provided a slightly better score and less underfit and overfit than the other models present. Finally, we validated it with our test data and came to the conclusion that even though it is good enough for classifying most of the cases, it still struggles to discern from the minority class, which, in our case, is our target.
+
+# Introduction
+
+Food trucks and mobile food vendors are a common sight in Downtown Vancouver, offering a wide range of cuisine types from hot dogs and burgers to shawarma and tacos. With so many different vendors and food options, it can be useful to automatically identify what kind of food a vendor specializes in based only on select information. In this project, we study whether we can predict if a food vendor is a hot dog vendor or not using the vendor’s business name. We used a publicly available dataset of mobile food vendors in Vancouver from the City of Vancouver’s open data portal, where each row represents relevant information for a single food vendor and includes columns such as BUSINESS_NAME, LOCATION, DESCRIPTION, GEO_LOCALAREA, and geographic coordinates. For our analysis, we constructed a binary target variable named is_hotdog, which is True when the DESCRIPTION is “Hot Dogs” and False otherwise. This allows us to investigate how much information about the type of food a vendor sells can be extracted from the business name, as well as putting to the test the predictive power of some of the most common classification algorithms: Decision Trees, Logistic Regression, and Naive-Bayes.
+
+# Methods
+
+## Data
+
+The data set used in this project is Street food vending created by the City of Vancouver[@CityOfVancouverStreetFood]. It was sourced from the City of Vancouver Open Data Portal[@CityOfVancouverOpenData] and can be found [here](https://opendata.vancouver.ca/explore/dataset/food-vendors/table/). Each row in the dataset represents a food vendor and includes information such as the business name, description, and location. In this project, we derive the binary target is_hotdog from the DESCRIPTION column (“Hot Dogs” vs other descriptions) and use the BUSINESS_NAME as the main predictor in our models.
+
+Before splitting the data into training and test sets and fitting models, we perform basic data validation on the raw tabular data to check that it is well-formed and consistent with our expectations. We expect the food vendors' data to come from a CSV file that can be read into a non-empty pandas DataFrame. If the download fails or the file is not in the expected tabular format, we want the analysis to stop early instead of producing confusing errors later.
+
+## Analysis
+
+The dataset was partitioned into 70% for training set and 30% for testing set. Following an exploratory data analysis (EDA), a CountVectorizer was implemented to generate a Bag-of-Words (BoW) representation. This method will split each individual word in the names of the businesses into its own individual columns, and will assess whether or not the word is present in the data set. Four distinct models were compared using 5-fold cross-validation: 1) DummyClassifier: Used as a baseline to establish the minimum acceptable performance for predicting the 'hot dog' category, 2) DecisionTreeClassifier: Selected to determine if simple, hierarchical decision rules could effectively map out the relationship of the names to the category, 3) LogisticRegression: Included to identify linear relationships and determine which specific tokens (words) were most relevant for classification, and 4) BernoulliNB (Naive-Bayes): Chosen for its efficiency in training and its probabilistic approach to classification. The models were ranked based on accuracy ($\frac{\text{correct predictions}}{\text{total predictions}}$). The top-performing model chosen was Naive-Bayes, and hyperparameter optimization was performed. The hyperparameters optimized were the `alpha` hyperparameter (which controls the tradeoff between variance and bias of our model), as well as the `max_features` variable (the actual size of our vocabulary, considering the top `max_features` words) of our `CountVectorizer`, as this can also play a role in overfitting. A randomized approach was used to test in a wide space, with 500 iterations and a random integer ranging from $[5, \text{size of the vocabulary}]$ for `max_features`, and a loguniform distribution ranging from $[0.001, 1000]$ for `alpha`. Lastly, the model was retrained using the best hyperparameter selections and evaluated with the test set to formulate the final conclusion.
+
+# Results 
+
+## EDA 
+
+When visualizing our EDA, we can notice several key points [@W3SchoolsCSSColors]. From @fig-most-common-cuisine, we can see that of all the cuisine types from Downtown Vancouver food vendors, hot dog stands seem to be the most common of them all. It is also very important to analyze our classes before starting our work. When you have a large class imbalance, a lot of the time, your model will give you a score that is not representative of whether or not your model works well. For example, if you observe the second plot for a data set where one class is represented in a much higher proportion than the other, a model like DummyClassifier will give you an extremely high score. This isn't because the model works perfectly, it's because it'll always predict the higher represented class! Yet we can see from @fig-class-imbalance that we do not have that issue as much here, as the class imbalance isn't too severe. Lastly, we noticed that there were some initial blanks in the BUSINESS_NAME, which we addressed by changing it to an empty space (and thus not screwing up the CountVectorizer instance we will need for this analysis). We can observe from @fig-blank-names that all the cases of a blank BUSINESS_NAME belong to Hot Dog vendors, which would be something we would like our models to capture.
+Finally, we would expect our classifier to be able to identify the "easy" base case of having no name, since this is a relevant discriminator for both our classes.
+
+![Most common cuisine types among food vendors in Downtown Vancouver.](../results/figures/EDA/plot1_cuisine_types.png){#fig-most-common-cuisine width="70%"}
+
+![Class imbalance in training data.](../results/figures/EDA/plot2_class_imbalance.png){#fig-class-imbalance width="40%"}
+
+![Blank names relevance in classification.](../results/figures/EDA/plot3_blank_names_vs_hotdog.png){#fig-blank-names width="60%"}
+
+## Baseline 
+
+
+```{python}
+#| label: tbl-dummy-cv
+#| tbl-cap: DummyClassifier cross validation scores and times.
+
+dummy_cv_table = pd.read_csv("../results/tables/Dummy/raw_cv_scores.csv")
+dummy_accuracy = dummy_cv_table['test_score'].mean()
+Markdown(dummy_cv_table.to_markdown(index = False))
+```
+
+As expected, we can see from @tbl-dummy-cv that the dummy consistently predicts the majority class, with an accuracy of around `{python} dummy_accuracy`, being consistent with the representation of our split.
+
+## Decision Tree
+
+Here we are training a simple decision tree to identify whether the vendor sells hot dogs or not. This is a simple model with easy to interpret coefficients, and it would be interesting to check whether or not it correctly identified some of the most relevant clues (something like "Joe's Hot Dogs" being correctly classified, for instance).
+
+```{python}
+#| label: tbl-decisiontree-cv
+#| tbl-cap: Decision tree cross validation scores and times.
+
+decisiontree_table = pd.read_csv("../results/tables/DecisionTree/raw_cv_scores.csv")
+decisiontree_accuracy = decisiontree_table['test_score'].mean()
+Markdown(decisiontree_table.to_markdown(index = False))
+```
+
+From @tbl-decisiontree-cv, we can see that the decision tree performed worse than the dummy classifier, as it is overfitting the prediction, which is evident in the substantial gap between the validation and training scores. By taking a look at the depths and tree structure, we can see the most discriminating factors and better understand these discrepancies. From @fig-decision-tree-structure, we can observe some sensible initial discriminations, such as "dogs", "japadog" and "dog", which would quickly identify the vendor as a Hot Dog place. As we can see, the model contains `{python} dt_fit["decisiontreeclassifier"].tree_.max_depth` levels of decisions, yet, the level of specificity (given that we are using a bag of words) makes it perform poorly. 
+
+![Decision tree structure (limited to the first 5 levels of the depth).](../results/figures/DecisionTree/diagram.png){#fig-decision-tree-structure width="70%"}
+
+![Confusion matrix for the Decision Tree.](../results/figures/DecisionTree/train_confusion_matrix.png){#fig-decision-tree-cm width="80%"}
+
+```{python}
+#| label: tbl-dt-mismatch
+#| tbl-cap: Mismatches for Decision Tree.
+
+decisiontree_mismatch = pd.read_csv("../results/tables/DecisionTree/raw_cv_scores.csv")
+Markdown(decisiontree_mismatch.to_markdown(index = False))
+```
+
+From @fig-decision-tree-cm, we can observe the confusion matrix and the misses in the cross validation of the model trained. We can observe that the model is very good at identifying when something seems "Hot-Doggy", yet it produces a high degree of false positives. We can observe some of the mistakes shown below in @tbl-dt-mismatch, and see that the model tends to predict most of the time that the vendor is a hot dog stand, with probably the only reasonable exception being Van Dog.
+
+## Logistic Regression
+
+Here we will train a logistic regression in order to see whether or not we can improve our accuracy and reduce the possible overfitting. This model also has the advantage of having interpretable parameters, which in our case relate to how often each of our features is associated with the target variable (`is_hotdog = True`).
+
+```{python}
+#| label: tbl-lr-cv
+#| tbl-cap: Logistic regression cross validation scores and times.
+
+lr_table = pd.read_csv("../results/tables/LogisticRegression/raw_cv_scores.csv")
+lr_agg_table = pd.read_csv("../results/tables/LogisticRegression/agg_cv_scores.csv", index_col=0)
+lr_accuracy = lr_agg_table.loc['test_score', 'mean']
+Markdown(lr_table.to_markdown(index = False))
+```
+
+From @tbl-lr-cv, we can see a slight improvement in generalization from the decision tree, but it performs not much better than the dummy regressor with an average validation score of `{python} lr_accuracy`. This could indicate that there may not be a single independent linear relationship between the token features to the target. Also, it is worth noting that the model has a lot of variability between folds.
+
+```{python}
+#| label: tbl-lr-coef
+#| tbl-cap: Coefficients of the logistic regression.
+
+lr_coef = pd.read_csv("../results/tables/LogisticRegression/coefficients.csv")
+
+# Select the first 5 and last 5 rows
+lr_coef_subset = pd.concat([lr_coef.head(5), lr_coef.tail(5)])
+
+Markdown(lr_coef_subset.to_markdown(index = False))
+```
+
+![Top 5 most discriminant features (upper and lower).](../results/figures/LogisticRegression/most_discriminant_features.png){#fig-lr-top5 width="100%"}
+
+From @tbl-lr-coef and @fig-lr-top5, we can see that the coefficients associated roughly match with the choices determined by the decision tree, with "japadog", "dog", and "dogs" being relevant. Yet if we observe the intercept, we see the model is heavily biased toward making a negative prediction. Thus, we would not expect the model to be good at identifying hot dog places in particular. The number of coefficients produced is `{python} len(lr_fit['logisticregression'].coef_[0])` and the intercept is `{python} round(lr_fit['logisticregression'].intercept_[0], 3)`.
+
+![Confusion matrix for the Logistic Regression.](../results/figures/LogisticRegression/train_confusion_matrix.png){#fig-lr-cm width="80%"}
+
+```{python}
+#| label: tbl-lr-mismatch
+#| tbl-cap: Mismatches for Logistic Regression.
+#| 
+lr_mismatch = pd.read_csv("../results/tables/LogisticRegression/train__model_mismatches.csv")
+Markdown(lr_mismatch.to_markdown(index = False))
+```
+
+In @fig-lr-cm, we can observe the confusion metrics and misses in the cross validation of the model. We can observe that the logistic regression is not particularly good at discriminating, since it is evidently favouring the "not hot dog" class, as we expected from the coefficients calculated. We can also see the patterns for the mismatches in @tbl-lr-mismatch. We can see the model failed to identify some of the "easy" catches we found previously, such as identifying blanks or keywords like "dog", which do not skew the balance enough in favour of the target class.
+
+
+## Naive-Bayes
+
+```{python}
+#| label: tbl-nb-cv
+#| tbl-cap: Naive-Bayes cross validation scores and times.
+#| 
+nb_table = pd.read_csv("../results/tables/NaiveBayes/raw_cv_scores.csv")
+nb_accuracy = nb_table['test_score'].mean()
+Markdown(nb_table.to_markdown(index = False))
+```
+
+![Confusion matrix for the Naive-Bayes classifier.](../results/figures/NaiveBayes/train_confusion_matrix.png){#fig-nb-cm width="80%"}
+
+```{python}
+#| label: tbl-nb-mismatch
+#| tbl-cap: Mismatches for Naive-Bayes.
+#| 
+nb_mismatch = pd.read_csv("../results/tables/NaiveBayes/train__model_mismatches.csv")
+Markdown(nb_mismatch.to_markdown(index = False))
+```
+
+Finally, we will be testing the Naive-Bayes model, which is also a relatively simple model that does not tend to over-fit as much, just to see which model is best. The cross validation scores and time are shown in @tbl-nb-cv. We can also see that it performs better than the tree and dummy with less overfit, although nconda ot very consistently, like the logistic regression. As shown from @fig-nb-cm, the confusion metrics are quite similar to the logistic regression, as we can see is not particularly good at identifying hot dog features. From the mismatches in @tbl-nb-mismatch, we can also see a similar pattern as the logistic regression model, failing to identify the "obvious" patterns we stated in the beginning. 
+
+## Model Comparisons
+
+As shown in @tbl-model-comparison, we can see a negligible difference between Naive-Bayes and Logistic Regression. But we will choose to move forward with the Naive-Bayes classifier, as it is also a relatively simple model with slightly faster fitting time.
+
+```{python}
+#| label: tbl-model-comparison
+#| tbl-cap: Performance comparison across the different models.
+
+models_comparison = pd.read_csv("../results/tables/model_comparison_mean.csv")
+Markdown(models_comparison.to_markdown(index = True))
+```
+
+
+
+## Best Model Hyperparameter Optimization
+
+From  @tbl-nb-rscv, we can observe a slight increase in the validation score compared to before. After evaluating it on the test set, the model ended up with a test score of 0.714, which is not too far off from the validation score of 0.778. However, in @fig-nb-brcvcm, we can see that, although the model makes good predictions, it still fails to raise the "hot dog alert". In @tbl-nb-best-mismatch, we can further see the failed classifications. Save for the first one, which we would even classify as a hot dog stand, it still missed some of the cues we identified at the beginning, meaning this model will probably encounter these limitations in future predictions.
+
+```{python}
+#| label: tbl-nb-rscv
+#| tbl-cap: Randomized search CV results for best Naive-Bayes model.
+#| 
+nb_randomsearch = pd.read_csv("../results/tables/NaiveBayes/RandomizedSearchCV_results_head.csv")
+Markdown(nb_randomsearch.to_markdown(index = False))
+```
+
+![Confusion matrix for the best Naive-Bayes classifier.](../results/figures/NaiveBayes/best_rcv_model_test_confusion_matrix.png){#fig-nb-brcvcm width="80%"}
+
+```{python}
+#| label: tbl-nb-best-mismatch
+#| tbl-cap: Confusion matrix for the best Naive-Bayes model.
+#| 
+nb_best_mismatch = pd.read_csv("../results/tables/NaiveBayes/best_rcv_model_test_mismatches.csv")
+Markdown(nb_best_mismatch.to_markdown(index = False))
+```
+
+# Discussion
+
+As we saw, there are several limitations to what a Count Vectorizer and a binary classification can perform. The relationships that we found within our variables may not linear, as there are some cases where the biases of our more intelligent classifiers, such as the Bayesian and the logistic regression, would favor into classifying something as not hotdog, when we noticed from our EDA that it was those specific cases of no name where the model should have predicted that that was hotdog stand. This makes for a model that will be particularly good at identifying the majority class, which pretty much makes it comparable to a dummy. And thus, from the limitations of our current estimators, our model is not ready to be used yet for prediction.
+
+Now, depending on the context of our problem, we may lean in favour of having a model that is really good at predicting when something is not a hotdog, versus wanting a model that is really good at predicting when something is a hotdog. Let's say we have someone who doesn't really like hot dogs that much. We would prefer a model that probably outputs more consistently or classifies non-hot dog places as non-hot dog places, where this default probably like opens up possibilities for someone looking for options that are likely not hot dog related. And it is not too terrible if a hot dog place slides in, given that it is the fewer of the bunch. For that particular case, our model is probably the one fitting better into that narrative, as it is consistent enough to determine or correctly classify the null class, even though it's not as good as classifying the positive class. Now, in the context of someone really craving a hot dog and wanting to be very sure that that is a hot dog place, then probably the best model that we trained will not fit into that description as much, since it's not particularly good at predicting a class. In that case, it would have been better to train a decision tree, which we saw had much higher bias in identifying the hot dog class.
+
+A test accuracy of 0.71 shows that our model is still a work in progress, but it shows promising results from the confusion matrix, where it only has 1 FP. There are also 6 FN, as that is a byproduct of how the model learned the patterns. Some challenges in the data set include the size, which is a small dataset with only around 90 entries. Another challenge is the imbalance of classes. It would be ideal if each class would represent roughly 50–50% of the samples. We believe that the imbalance was not severe, so we didn’t make any adjustments. In the future, we can take the argument “class_weight” into account during hyperparameter tuning for a model that supports it.
+
+Finally, we could also add, for future iterations, or as a different research question, whether an SVM would perform better given the conditions we have mentioned. It is likely that a nonlinear model will fare better since we have found some instances where the natural bias of logistic regression and Naive-Bayes have pushed the model to incorrectly classify some of the examples.
+
+
+# References
