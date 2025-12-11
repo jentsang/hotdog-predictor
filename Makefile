@@ -9,7 +9,6 @@ data/raw/food_vendors_raw.csv : scripts/download_data.py
 		--out-file data/raw/food_vendors_raw.csv
 
 #preparing/splitting the data 
-
 data/processed/vendors_train.csv data/processed/vendors_test.csv : data/raw/food_vendors_raw.csv scripts/prepare_data.py
 	python scripts/prepare_data.py \
 		 --input-file data/raw/food_vendors_raw.csv \
@@ -17,3 +16,12 @@ data/processed/vendors_train.csv data/processed/vendors_test.csv : data/raw/food
  		 --test-out data/processed/vendors_test.csv \
  		 --train-size 0.7 \
  		 --seed 522
+
+#exploratory data analysis (EDA)
+results/figures/EDA : data/processed/vendors_train.csv scripts/eda.py
+	python scripts/eda.py \
+		--training-data data/processed/vendors_train.csv \
+		--plot-to results/figures/EDA
+
+
+
