@@ -1,35 +1,31 @@
 """
-Command-line entry point for training and analyzing a Decision Tree
+Command-line entry point for training and analyzing a Dummy
 bag-of-words classifier.
 
 This script loads training and testing data, fits an
-`analysis_tools.TreeModel`, and exports cross-validation scores,
-confusion matrices, mismatches, and the actual decision tree diagram. 
+`analysis_tools.DummyModel()`, and exports the corresponding cross-validation scores.
 It is intended to be run from the command line.
 """
 
 import click
-from analysis_tools import TreeModel ## Import the Decision Tree model class
-from pandas import read_csv, DataFrame, Series
-
+from pandas import read_csv, DataFrame
+from analysis_tools import DummyModel 
 
 @click.command()
 @click.option('--training-data', type=str, help="Path to training data", required=True)
 @click.option('--testing-data', type=str, help="Path to testing data", required=True)
-@click.option('--figures-to', type=str, help="Path to where figures will be saved", required=True)
 @click.option('--tables-to', type=str, help="Path to where tables will be saved", required=True)
-@click.option('--model-to', type=str, help="Path to where the model will be saved", required=True)
 @click.option('--seed', type=int, help="Random seed", default=522)
-def main(training_data, testing_data, figures_to, tables_to, model_to, seed) -> None:
+def main(training_data, testing_data, tables_to, seed) -> None:
     """
-    Run the end-to-end decision tree text classification pipeline.
-
+    Run the end-to-end dummy text classification pipeline.
+    
     The command reads training and testing CSV files, extracts the
     ``BUSINESS_NAME`` column as text features and ``is_hotdog`` as the
-    target, initializes an :class:`analysis_tools.TreeModel`, and
-    generates evaluation artifacts such as cross-validation scores,
-    confusion matrices, misclassified examples, and a decision tree
-    diagram. The fitted model is also serialized to disk.
+    target, initializes a :class:`analysis_tools.DummyModel`, and
+    exports cross-validation scores for this simple baseline model.
+    As this is just a dummy classifier, no figures or additional
+    evaluation artifacts are generated.
 
     Parameters
     ----------
@@ -39,15 +35,9 @@ def main(training_data, testing_data, figures_to, tables_to, model_to, seed) -> 
     testing_data : str
         Path to the CSV file containing the test data. The file must
         include at least the columns ``BUSINESS_NAME`` and ``is_hotdog``.
-    figures_to : str
-        Directory where generated figures (e.g., confusion matrices and
-        the decision tree diagram) will be saved.
     tables_to : str
-        Directory where generated tables (e.g., cross-validation scores
-        and misclassified examples) will be saved.
-    model_to : str
-        Directory where the fitted decision tree model and related
-        serialized objects will be saved.
+        Directory where generated tables (e.g., cross-validation scores)
+        will be saved.
     seed : int
         Random seed used when initializing the underlying model.
 
@@ -61,12 +51,10 @@ def main(training_data, testing_data, figures_to, tables_to, model_to, seed) -> 
 
     .. code-block:: bash
 
-       python decision_tree_analysis.py \\
+       python dummy_analysis.py \\
            --training-data=../data/processed/vendors_train.csv \\
            --testing-data=../data/processed/vendors_test.csv \\
-           --figures-to=../results/figures/ \\
            --tables-to=../results/tables/ \\
-           --model-to=../results/models/ \\
            --seed=522
     """
 
@@ -80,34 +68,21 @@ def main(training_data, testing_data, figures_to, tables_to, model_to, seed) -> 
     X_test = test_data["BUSINESS_NAME"].fillna('')
     y_test = test_data["is_hotdog"]
 
-    # Declare the model
-    dt = TreeModel(
+    # Declare the dummy baseline model
+    dummy = DummyModel(
         X_train=X_train,
         y_train=y_train,
         X_test=X_test,
         y_test=y_test,
         random_state=seed,
         table_output_directory=tables_to,
-        figure_output_directory=figures_to,
-        model_output_directory=model_to,
     )
 
-    # Extract cross-validation scores
-    dt.store_raw_cv_scores()
+    # Export raw and aggregated cross-validation scores
+    dummy.store_raw_cv_scores()
+    dummy.store_agg_cv_scores()
 
-    dt.store_agg_cv_scores()
-
-    # Extract confusion matrix and model mismatches
-    dt.store_confusion_matrix()
-
-    dt.store_model_mismatches()
-
-    # Fit the model and export the decision tree diagram
-    dt.fit()
-    
-    dt.store_decision_tree_diagram()
-
-    click.echo("Decision Tree tables, figures, and model have been generated")
+    click.echo("Dummy cross-validation tables have been generated")
 
     return None
 

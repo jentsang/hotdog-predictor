@@ -13,20 +13,21 @@ from pandas import read_csv, DataFrame, Series
 
 
 @click.command()
-@click.option('--training-data', type=str, help="Path to training data")
-@click.option('--testing-data', type=str, help="Path to testing data")
-@click.option('--figures-to', type=str, help="Path to where figures will be saved")
-@click.option('--tables-to', type=str, help="Path to where tables will be saved")
+@click.option('--training-data', type=str, help="Path to training data", required=True)
+@click.option('--testing-data', type=str, help="Path to testing data", required=True)
+@click.option('--figures-to', type=str, help="Path to where figures will be saved", required=True)
+@click.option('--tables-to', type=str, help="Path to where tables will be saved", required=True)
+@click.option('--model-to', type=str, help="Path to where model will be saved", required=True)
 @click.option('--seed', type=int, help="Random seed", default=522)
-def main(training_data, testing_data, figures_to, tables_to, seed) -> None:
+def main(training_data, testing_data, figures_to, tables_to, model_to, seed) -> None:
     """
-    Run the end-to-end Bayesian text classification pipeline.
+    Run the end-to-end Naive Bayes text classification pipeline.
 
     The command reads training and testing CSV files, extracts the
     ``BUSINESS_NAME`` column as text features and ``is_hotdog`` as the
     target, initializes an :class:`analysis_tools.NaiveBayesModel`, and
-    generates evaluation artifacts such as cross-validation scores and 
-    confusion matrices.
+    generates evaluation artifacts such as cross-validation scores,
+    confusion matrices, and tables of misclassified examples.
 
     Parameters
     ----------
@@ -37,11 +38,14 @@ def main(training_data, testing_data, figures_to, tables_to, seed) -> None:
         Path to the CSV file containing the test data. The file must
         include at least the columns ``BUSINESS_NAME`` and ``is_hotdog``.
     figures_to : str
-        Directory where generated figures (e.g., confusion matrices and
-        discriminant feature plots) will be saved.
+        Directory where generated figures (e.g., confusion matrices) will
+        be saved.
     tables_to : str
         Directory where generated tables (e.g., cross-validation scores
-        and coefficient tables) will be saved.
+        and misclassified examples) will be saved.
+    model_to : str
+        Directory where the fitted bayesian model and related
+        serialized objects will be saved.
     seed : int
         Random seed used when initializing the underlying model.
 
@@ -56,10 +60,11 @@ def main(training_data, testing_data, figures_to, tables_to, seed) -> None:
     .. code-block:: bash
 
        python bayesian_analysis.py \\
-           --training-data=../data/train.csv \\
-           --testing-data=../data/test.csv \\
+           --training-data=../data/processed/vendors_train.csv \\
+           --testing-data=../data/processed/vendors_test.csv \\
            --figures-to=../results/figures/ \\
            --tables-to=../results/tables/ \\
+           --model-to=../results/models/ \\
            --seed=522
 
     When called programmatically:
@@ -73,8 +78,7 @@ def main(training_data, testing_data, figures_to, tables_to, seed) -> None:
     ... )
     """
 
-    ## Here we are extracting the data from the source and filling na's with empty strings
-
+    # Extract data from the source and fill NA's with empty strings
     train_data = read_csv(training_data)
     test_data = read_csv(testing_data)
 
@@ -84,34 +88,29 @@ def main(training_data, testing_data, figures_to, tables_to, seed) -> None:
     X_test = test_data["BUSINESS_NAME"].fillna('')
     y_test = test_data["is_hotdog"]
 
-    ## Here we are declaring the model
-
-    lr = NaiveBayesModel(
+    # Declare the model
+    nb = NaiveBayesModel(
         X_train=X_train,
         y_train=y_train,
         X_test=X_test,
         y_test=y_test,
         random_state=seed,
         table_output_directory=tables_to,
-        figure_output_directory=figures_to
+        figure_output_directory=figures_to,
+        model_output_directory=model_to
     )
 
-    ## Here we are extracting the CV scores
+    # Extract cross-validation scores
+    nb.store_raw_cv_scores()
+    nb.store_agg_cv_scores()
 
-    lr.store_raw_cv_scores()
+    # Extract confusion matrix and model mismatches
+    nb.store_confusion_matrix()
+    nb.store_model_mismatches()
 
-    lr.store_agg_cv_scores()
-
-    ## Here we are extracting the model mismatches
-
-    lr.store_confusion_matrix()
-    
-    lr.store_model_mismatches()
-
-    print("Naive Bayes documents have been updated")
+    click.echo("Naive Bayes documents have been updated")
 
     return None
-
 
 
 if __name__ == "__main__":

@@ -11,9 +11,9 @@ This script:
 
 Usage example:
 
-    python scripts/prepare_data.py \
-        --input-file data/raw/food_vendors_raw.csv \
-        --train-out data/processed/vendors_train.csv \
+    python scripts/prepare_data.py \\
+        --input-file data/raw/food_vendors_raw.csv \\
+        --train-out data/processed/vendors_train.csv \\
         --test-out data/processed/vendors_test.csv
 """
 
@@ -60,8 +60,61 @@ from sklearn.model_selection import train_test_split
     show_default=True,
     help="Random seed for the train/test split.",
 )
-def main(input_file, train_out, test_out, train_size, seed):
-    """Load raw data, validate basic structure, engineer target, and split."""
+def main(input_file, train_out, test_out, train_size, seed) -> None:
+    """
+    Prepare the Food Vendors dataset for modelling.
+
+    This command reads a raw Food Vendors CSV file, validates that the
+    required columns are present, constructs a binary target
+    ``is_hotdog`` from the ``DESCRIPTION`` column, fills missing
+    business names with empty strings, performs a train/test split, and
+    writes the resulting datasets to disk.
+
+    The raw input is read with automatic delimiter detection
+    (``sep=None`` and ``engine='python'``) to accommodate the City of
+    Vancouver export format.
+
+    Parameters
+    ----------
+    input_file : str
+        Path to the raw Food Vendors CSV file (typically produced by the
+        download script). The file must contain at least the columns
+        ``BUSINESS_NAME`` and ``DESCRIPTION``.
+    train_out : str
+        Path where the processed training data will be saved as a CSV
+        file (for example,
+        ``"data/processed/vendors_train.csv"``). Any missing parent
+        directories will be created.
+    test_out : str
+        Path where the processed test data will be saved as a CSV file
+        (for example, ``"data/processed/vendors_test.csv"``). Any
+        missing parent directories will be created.
+    train_size : float, optional
+        Proportion of the full dataset to allocate to the training set.
+        Must be between 0.0 and 1.0. The remainder is used for the test
+        set. Defaults to 0.7.
+    seed : int, optional
+        Random seed used for the train/test split via
+        :func:`sklearn.model_selection.train_test_split`. Defaults to
+        522.
+
+    Returns
+    -------
+    None
+
+    Examples
+    --------
+    From the command line:
+
+    .. code-block:: bash
+
+       python prepare_data.py \\
+           --input-file=data/raw/food_vendors_raw.csv \\
+           --train-out=data/processed/vendors_train.csv \\
+           --test-out=data/processed/vendors_test.csv \\
+           --train-size=0.7 \\
+           --seed=522
+    """
 
     input_path = pathlib.Path(input_file)
     train_out_path = pathlib.Path(train_out)
@@ -79,7 +132,7 @@ def main(input_file, train_out, test_out, train_size, seed):
     food_vendors.columns = food_vendors.columns.str.strip()
 
     # --- Basic column checks -------------------------------------------------
-    required_columns = ["BUSINESS_NAME", "DESCRIPTION"]
+    required_columns = ["KEY", "BUSINESS_NAME", "DESCRIPTION"]
     missing = [col for col in required_columns if col not in food_vendors.columns]
 
     if missing:
@@ -89,7 +142,7 @@ def main(input_file, train_out, test_out, train_size, seed):
         )
 
     # --- Keep only columns needed for our analysis ---------------------------
-    clean_food = food_vendors[required_columns].copy()
+    clean_food = food_vendors[required_columns].sort_values("KEY").copy()
 
     # Binary target: True if description is exactly "Hot Dogs"
     clean_food["is_hotdog"] = clean_food["DESCRIPTION"] == "Hot Dogs"
