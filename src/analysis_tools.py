@@ -601,7 +601,7 @@ class ActualModel(BOWModel):
             'best_params': self.random_search.best_params_
         }
 
-        json_path = self.model_output_path + f'{self.model_name}_random_search_results.json'
+        json_path = self.model_output_path + "_random_search_results.json"
         with open(json_path, 'w') as json_file:
             json.dump(results_dict, json_file, indent=4)
 
@@ -856,7 +856,8 @@ class ActualModel(BOWModel):
             "probabilities": list(self.best_model.predict_proba(self.X_test)[:, 1]),
             "x": self.X_test.to_list(),
         }
-    # THE FIX: Select only the probability for the positive class (index 1)
+        
+        # THE FIX: Select only the probability for the positive class (index 1)
         df: pd.DataFrame = pd.DataFrame(data_dict)
 
         df[df["y"] != df["y_hat"]].sort_values('probabilities').to_csv(

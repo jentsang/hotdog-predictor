@@ -44,7 +44,7 @@ def main(training_data, plot_to):
     """
     train_data = pd.read_csv(training_data)
 
-    train_data["BUSINESS_NAME"] = train_data["BUSINESS_NAME"].fillna('')
+    train_data["BUSINESS_NAME"] = train_data["BUSINESS_NAME"].fillna("")
 
     # PLOT 1: Cuisine types among food vendors
     plot1 = alt.Chart(
