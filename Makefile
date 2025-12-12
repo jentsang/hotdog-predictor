@@ -34,7 +34,7 @@ results/tables/Dummy/agg_cv_scores.csv results/tables/Dummy/raw_cv_scores.csv : 
 	python scripts/dummy_analysis.py \
 		--training-data data/processed/vendors_train.csv \
 		--testing-data data/processed/vendors_test.csv \
-		--tables-to results/tables\
+		--tables-to results/tables/ \
 		--seed 522 
 
 #Decision Tree model 
@@ -50,9 +50,9 @@ results/models/DecisionTree/DecisionTree.pickle: \
 	python scripts/decisiontree_analysis.py \
 		--training-data data/processed/vendors_train.csv \
 		--testing-data data/processed/vendors_test.csv \
-		--figures-to results/figures \
-		--tables-to results/tables \
-		--model-to results/models \
+		--figures-to results/figures/ \
+		--tables-to results/tables/ \
+		--model-to results/models/ \
 		--seed 522
 
 #Logistic Regression model
@@ -69,9 +69,9 @@ results/models/LogisticRegression/LogisticRegression.pickle: \
 	python scripts/logistic_regression_analysis.py \
 		--training-data data/processed/vendors_train.csv \
 		--testing-data data/processed/vendors_test.csv \
-		--figures-to results/figures \
-		--tables-to results/tables \
-		--model-to results/models \
+		--figures-to results/figures/ \
+		--tables-to results/tables/ \
+		--model-to results/models/ \
 		--seed 522
 
 #Bayesian model 
@@ -85,9 +85,9 @@ results/figures/NaiveBayes/train_confusion_matrix.png : \
 	python scripts/bayesian_analysis.py \
 		--training-data data/processed/vendors_train.csv \
 		--testing-data data/processed/vendors_test.csv \
-		--figures-to results/figures \
-		--tables-to results/tables \
-		--model-to results/models \
+		--figures-to results/figures/ \
+		--tables-to results/tables/ \
+		--model-to results/models/ \
 		--seed 522
 
 #model comparision 
@@ -113,9 +113,9 @@ results/models/NaiveBayes/best_NaiveBayes.pickle : \
 	python scripts/bayesian_evaluation.py \
 		--training-data data/processed/vendors_train.csv \
 		--testing-data data/processed/vendors_test.csv \
-		--figures-to results/figures \
-		--tables-to results/tables \
-		--model-to results/models \
+		--figures-to results/figures/ \
+		--tables-to results/tables/ \
+		--model-to results/models/ \
 		--seed 522
 
 #clean up analysis
