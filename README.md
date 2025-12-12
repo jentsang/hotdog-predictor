@@ -205,6 +205,24 @@ python scripts/bayesian_evaluation.py \
   --seed 522
 ```
 
+## Running tests
+
+After setting up the environment, you can run the unit tests from the root of the repository.
+
+To run the full test suite:
+
+```bash
+pytest tests/
+```
+To run a single test file, for example the tests for the Naive Bayes model
+evaluation methods:
+
+```bash
+pytest tests/test_store_raw_cv_scores.py
+pytest tests/test_store_agg_cv_scores.py
+pytest tests/test_store_confusion_matrix.py
+pytest tests/test_store_model_mismatches.py
+```
 
 ## Dependencies
 

@@ -8,8 +8,11 @@ It is intended to be run from the command line.
 """
 
 import click
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from pandas import read_csv, DataFrame
-from analysis_tools import DummyModel 
+from src.analysis_tools import DummyModel 
 
 @click.command()
 @click.option('--training-data', type=str, help="Path to training data", required=True)

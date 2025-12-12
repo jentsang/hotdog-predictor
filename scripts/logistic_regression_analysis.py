@@ -9,7 +9,10 @@ features. It is intended to be run from the command line.
 """
 
 import click
-from analysis_tools import LRModel ## Import the logistic regression class
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from src.analysis_tools import LRModel ## Import the logistic regression class
 from pandas import read_csv, DataFrame, Series
 
 

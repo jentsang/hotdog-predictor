@@ -8,7 +8,10 @@ confusion matrices, and coefficient tables. It is intended to be run from the co
 """
 
 import click
-from analysis_tools import NaiveBayesModel ## Import the Naive Bayes Model class
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from src.analysis_tools import NaiveBayesModel ## Import the Naive Bayes Model class
 from pandas import read_csv, DataFrame, Series
 
 

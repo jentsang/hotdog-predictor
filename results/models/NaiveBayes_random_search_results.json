@@ -1,0 +1,7 @@
+{
+    "best_score": 0.7794871794871795,
+    "best_params": {
+        "bernoullinb__alpha": 1.1964854337146373,
+        "countvectorizer__max_features": 80
+    }
+}
