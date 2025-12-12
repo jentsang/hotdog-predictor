@@ -1,8 +1,11 @@
-# Makefile for group 17
+# Makefile for group 17 Hot dog predictor
 
 .PHONY: all clean
 
-all: results/tables/model_comparison_mean.csv \
+all: results/figures/EDA/plot1_cuisine_types.png \
+     results/figures/EDA/plot2_class_imbalance.png \
+     results/figures/EDA/plot3_blank_names_vs_hotdog.png \
+     results/tables/model_comparison_mean.csv \
      results/tables/NaiveBayes/RandomizedSearchCV_results_head.csv \
      results/tables/NaiveBayes/best_rcv_model_test_mismatches.csv \
      results/figures/NaiveBayes/best_rcv_model_test_confusion_matrix.png \
