@@ -72,11 +72,7 @@ results/models/LogisticRegression/LogisticRegression.pickle: \
 results/tables/NaiveBayes/raw_cv_scores.csv \
 results/tables/NaiveBayes/agg_cv_scores.csv \
 results/tables/NaiveBayes/train__model_mismatches.csv \
-results/tables/NaiveBayes/RandomizedSearchCV_results_head.csv \
-results/tables/NaiveBayes/best_rcv_model_test_mismatches.csv \
-results/figures/NaiveBayes/train_confusion_matrix.png \
-results/figures/NaiveBayes/best_rcv_model_test_confusion_matrix.png \
-results/models/NaiveBayes/best_NaiveBayes.pickle: \
+results/figures/NaiveBayes/train_confusion_matrix.png : \
     data/processed/vendors_train.csv \
     data/processed/vendors_test.csv \
     scripts/bayesian_analysis.py
