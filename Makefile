@@ -95,3 +95,19 @@ results/tables/model_comparison_mean.csv: \
 		--table-dir=results/tables \
 		--output-dir=results/tables \
 		--param=mean
+
+#Naive Bayes Evaluation 
+results/tables/NaiveBayes/RandomizedSearchCV_results_head.csv \
+results/tables/NaiveBayes/best_rcv_model_test_mismatches.csv \
+results/figures/NaiveBayes/best_rcv_model_test_confusion_matrix.png \
+results/models/NaiveBayes/best_NaiveBayes.pickle : \
+    data/processed/vendors_train.csv \
+    data/processed/vendors_test.csv \
+    scripts/bayesian_evaluation.py
+	python scripts/bayesian_evaluation.py \
+		--training-data data/processed/vendors_train.csv \
+		--testing-data data/processed/vendors_test.csv \
+		--figures-to results/figures \
+		--tables-to results/tables \
+		--model-to results/models \
+		--seed 522
