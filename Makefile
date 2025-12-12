@@ -1,6 +1,12 @@
 # Makefile for group 17
 
+.PHONY: all clean
 
+all: results/tables/model_comparison_mean.csv \
+     results/tables/NaiveBayes/RandomizedSearchCV_results_head.csv \
+     results/tables/NaiveBayes/best_rcv_model_test_mismatches.csv \
+     results/figures/NaiveBayes/best_rcv_model_test_confusion_matrix.png \
+     results/models/NaiveBayes/best_NaiveBayes.pickle
 
 #downloading the data 
 data/raw/food_vendors_raw.csv : scripts/download_data.py
@@ -111,3 +117,42 @@ results/models/NaiveBayes/best_NaiveBayes.pickle : \
 		--tables-to results/tables \
 		--model-to results/models \
 		--seed 522
+
+#clean up analysis
+clean:
+	rm -f data/raw/food_vendors_raw.csv
+	rm -f data/processed/vendors_train.csv data/processed/vendors_test.csv
+
+	rm -f results/figures/EDA/plot1_cuisine_types.png
+	rm -f results/figures/EDA/plot2_class_imbalance.png
+	rm -f results/figures/EDA/plot3_blank_names_vs_hotdog.png
+
+	rm -f results/tables/Dummy/agg_cv_scores.csv
+	rm -f results/tables/Dummy/raw_cv_scores.csv
+
+	rm -f results/tables/DecisionTree/agg_cv_scores.csv
+	rm -f results/tables/DecisionTree/raw_cv_scores.csv
+	rm -f results/tables/DecisionTree/train__model_mismatches.csv
+	rm -f results/figures/DecisionTree/diagram.png
+	rm -f results/figures/DecisionTree/train_confusion_matrix.png
+	rm -f results/models/DecisionTree/DecisionTree.pickle
+
+	rm -f results/tables/LogisticRegression/agg_cv_scores.csv
+	rm -f results/tables/LogisticRegression/raw_cv_scores.csv
+	rm -f results/tables/LogisticRegression/coefficients.csv
+	rm -f results/tables/LogisticRegression/train__model_mismatches.csv
+	rm -f results/figures/LogisticRegression/most_discriminant_features.png
+	rm -f results/figures/LogisticRegression/train_confusion_matrix.png
+	rm -f results/models/LogisticRegression/LogisticRegression.pickle
+
+	rm -f results/tables/NaiveBayes/raw_cv_scores.csv
+	rm -f results/tables/NaiveBayes/agg_cv_scores.csv
+	rm -f results/tables/NaiveBayes/train__model_mismatches.csv
+	rm -f results/figures/NaiveBayes/train_confusion_matrix.png
+
+	rm -f results/tables/model_comparison_mean.csv
+
+	rm -f results/tables/NaiveBayes/RandomizedSearchCV_results_head.csv
+	rm -f results/tables/NaiveBayes/best_rcv_model_test_mismatches.csv
+	rm -f results/figures/NaiveBayes/best_rcv_model_test_confusion_matrix.png
+	rm -f results/models/NaiveBayes/best_NaiveBayes.pickle
