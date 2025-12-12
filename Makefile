@@ -88,3 +88,14 @@ results/models/NaiveBayes/best_NaiveBayes.pickle: \
 		--model-to results/models \
 		--seed 522
 
+#model comparision 
+results/tables/model_comparison_mean.csv: \
+    results/tables/Dummy/agg_cv_scores.csv \
+    results/tables/DecisionTree/agg_cv_scores.csv \
+    results/tables/LogisticRegression/agg_cv_scores.csv \
+    results/tables/NaiveBayes/agg_cv_scores.csv \
+    scripts/compare_models.py
+	python scripts/compare_models.py \
+		--table-dir=results/tables \
+		--output-dir=results/tables \
+		--param=mean
