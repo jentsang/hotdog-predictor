@@ -28,8 +28,63 @@ results/tables/Dummy/agg_cv_scores.csv results/tables/Dummy/raw_cv_scores.csv : 
 	python scripts/dummy_analysis.py \
 		--training-data data/processed/vendors_train.csv \
 		--testing-data data/processed/vendors_test.csv \
-		--tables-to results/tables/Dummy \
+		--tables-to results/tables\
 		--seed 522 
 
+#Decision Tree model 
+results/tables/DecisionTree/agg_cv_scores.csv \
+results/tables/DecisionTree/raw_cv_scores.csv \
+results/tables/DecisionTree/train__model_mismatches.csv \
+results/figures/DecisionTree/diagram.png \
+results/figures/DecisionTree/train_confusion_matrix.png \
+results/models/DecisionTree/DecisionTree.pickle: \
+    data/processed/vendors_train.csv \
+    data/processed/vendors_test.csv \
+    scripts/decisiontree_analysis.py
+	python scripts/decisiontree_analysis.py \
+		--training-data data/processed/vendors_train.csv \
+		--testing-data data/processed/vendors_test.csv \
+		--figures-to results/figures \
+		--tables-to results/tables \
+		--model-to results/models \
+		--seed 522
 
+#Logistic Regression model
+results/tables/LogisticRegression/agg_cv_scores.csv \
+results/tables/LogisticRegression/raw_cv_scores.csv \
+results/tables/LogisticRegression/coefficients.csv \
+results/tables/LogisticRegression/train__model_mismatches.csv \
+results/figures/LogisticRegression/most_discriminant_features.png \
+results/figures/LogisticRegression/train_confusion_matrix.png \
+results/models/LogisticRegression/LogisticRegression.pickle: \
+    data/processed/vendors_train.csv \
+    data/processed/vendors_test.csv \
+    scripts/logistic_regression_analysis.py
+	python scripts/logistic_regression_analysis.py \
+		--training-data data/processed/vendors_train.csv \
+		--testing-data data/processed/vendors_test.csv \
+		--figures-to results/figures \
+		--tables-to results/tables \
+		--model-to results/models \
+		--seed 522
+
+#Bayesian model 
+results/tables/NaiveBayes/raw_cv_scores.csv \
+results/tables/NaiveBayes/agg_cv_scores.csv \
+results/tables/NaiveBayes/train__model_mismatches.csv \
+results/tables/NaiveBayes/RandomizedSearchCV_results_head.csv \
+results/tables/NaiveBayes/best_rcv_model_test_mismatches.csv \
+results/figures/NaiveBayes/train_confusion_matrix.png \
+results/figures/NaiveBayes/best_rcv_model_test_confusion_matrix.png \
+results/models/NaiveBayes/best_NaiveBayes.pickle: \
+    data/processed/vendors_train.csv \
+    data/processed/vendors_test.csv \
+    scripts/bayesian_analysis.py
+	python scripts/bayesian_analysis.py \
+		--training-data data/processed/vendors_train.csv \
+		--testing-data data/processed/vendors_test.csv \
+		--figures-to results/figures \
+		--tables-to results/tables \
+		--model-to results/models \
+		--seed 522
 
