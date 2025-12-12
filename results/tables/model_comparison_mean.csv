@@ -1,5 +1,5 @@
 ,Dummy,DecisionTree,LogisticRegression,NaiveBayes
-fit_time,0.001,0.003,0.003,0.001
-score_time,0.001,0.002,0.0,0.0
+fit_time,0.001,0.001,0.002,0.001
+score_time,0.0,0.0,0.0,0.0
 test_score,0.651,0.567,0.779,0.779
 train_score,0.651,0.984,0.81,0.81
