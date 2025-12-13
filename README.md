@@ -1,41 +1,14 @@
 # Food Vendors in Vancouver: Hot Dog or Not?
 
-author: TSANG JENNIFER, TSEGAY SAMRAWIT MEZGEBO, ASLAM ZAKI, PALAFOX PRIETO HECTOR  
+Authors: Zaki Aslam, Hector Palafox Prieto, Jennifer Tsang, and Samrawit Mezgebo Tsegay
 
 Demo of a data analysis project for DSCI 522 (Data Science Workflows), a course in the Master of Data Science program at the University of British Columbia.
 
 ## About
 
-In this project, we use the City of Vancouver **“Food Vendors”** open dataset to explore where different kinds of food vendors operate in Vancouver and whether we can automatically identify hot-dog vendors.
+In this project, we used decision trees, logistic regression, and a Naive Bayes classifier to identify whether or not a food vendor sells hot dogs via their name. We trained each model individually using a cross-validation setup, and we compared the scores of the accuracy in order to determine a model to train and to compare to the test data. In our current results, a tuned Naïve Bayes classifier performs best, with test accuracy around 0.79 and relatively few false positives. Finally, we validated it with our test data and came to the conclusion that even though it is good enough for classifying most of the cases, it still struggles to discern from the minority class, which, in our case, is our target. 
 
-Our main research question is:
-
-> Can we predict whether a food vendor is a hot-dog vendor or not?
-
-We construct a binary target variable `is_hotdog` using the `DESCRIPTION` column: it is `True` when `DESCRIPTION` is `"Hot Dogs"` and `False` otherwise. Our main feature is the vendor’s `BUSINESS_NAME`, which we use as text input to a set of classification models.
-
-The goals of this project are to:
-
-- build and compare simple binary classifiers on real open data,  
-- work with text fields (business names) to construct a meaningful target variable,  
-- follow a clear and reproducible workflow using scripts, Quarto, Docker, and GitHub.
-
-We compare several models (Dummy baseline, Decision Tree, Logistic Regression, Naïve Bayes, and a Bayesian model) using cross-validation and a held-out test set. In our current results, a tuned Naïve Bayes classifier performs best, with test accuracy around 0.79 and relatively few false positives.
-
-## Data
-
-The data set used in this project is the **“Food Vendors”** dataset from the City of Vancouver Open Data Portal:
-
-- **Dataset:** Food Vendors  
-- **Provider:** City of Vancouver Open Data Portal  
-- **URL:** https://opendata.vancouver.ca/explore/dataset/food-vendors/table/  
-
-Each row in the dataset represents a food vendor and includes information such as the business name, food description, location, and geographic coordinates. For our analysis we primarily use:
-
-- `BUSINESS_NAME` — the name of the vendor (feature)  
-- `DESCRIPTION` — the category of food offered (used to create the `is_hotdog` target)
-
-Other columns (e.g., `LOCATION`, `GEO_LOCALAREA`, coordinates) remain in the raw data but are not used directly in the final models.
+The data set used in this project is Street food vending created by the City of Vancouver (Vancouver 2025b). It was sourced from the City of Vancouver Open Data Portal (Vancouver 2025a) and can be found [here](https://opendata.vancouver.ca/explore/dataset/food-vendors/table/). Each row in the dataset represents a food vendor and includes information such as the business name, description, and location. In this project, we derive the binary target from the description column (“Hot Dogs” vs other descriptions) and use the business name as the main predictor in our models.
 
 The data is published under the **Open Government Licence – Vancouver**.  
 For details, see: https://opendata.vancouver.ca/pages/licence/
