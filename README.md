@@ -10,17 +10,18 @@ In this project, we used decision trees, logistic regression, and a Naive Bayes 
 
 The data set used in this project is Street food vending created by the City of Vancouver (Vancouver 2025b). It was sourced from the City of Vancouver Open Data Portal (Vancouver 2025a) and can be found [here](https://opendata.vancouver.ca/explore/dataset/food-vendors/table/). Each row in the dataset represents a food vendor and includes information such as the business name, description, and location. In this project, we derive the binary target from the description column (“Hot Dogs” vs other descriptions) and use the business name as the main predictor in our models.
 
-The data is published under the **Open Government Licence – Vancouver**.  
-For details, see: https://opendata.vancouver.ca/pages/licence/
-
-
 ## Report
 
-The final report for this milestone is available in the `reports/` folder:
+The final report is available in the `reports/` folder:
 
 - HTML: [dog_or_not_report.html](reports/dog_or_not_report.html)  
 - PDF:  [dog_or_not_report.pdf](reports/dog_or_not_report.pdf)
 
+## Dependencies
+
+- [Docker](https://www.docker.com/)
+- [VS Code](https://code.visualstudio.com/download)
+- [VS Code Jupyter Extension](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.jupyter)
 
 ## Usage
 
@@ -196,27 +197,6 @@ pytest tests/test_store_agg_cv_scores.py
 pytest tests/test_store_confusion_matrix.py
 pytest tests/test_store_model_mismatches.py
 ```
-
-## Dependencies
-
-The main dependencies needed to run the analysis (as specified in environment.yml) are:
-
-- python=3.11
-- conda-lock=3.0.4
-- scikit-learn=1.7.2
-- pandas=2.3.3
-- jupyterlab=4.4.10
-- altair=6.0.0
-- matplotlib=3.10.7
-- pip=25.3
-- pandera=0.26.1
-- click=8.3.1
-- vl-convert-python=1.8.0
-- quarto=1.8.26
-- pip:
-    - mglearn==0.2.0
-
-For the complete and authoritative list of packages and versions, please see environment.yml and conda-lock.yml.
 
 ## License
 
