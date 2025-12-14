@@ -1,6 +1,6 @@
 services:
   hotdog_predictor:
-    image: jentsang/hotdog-predictor:sha-561dde5  
+    image: jentsang/hotdog-predictor:sha-266d682
     container_name: hotdog_predictor
     ports:
       - "8888:8888"
