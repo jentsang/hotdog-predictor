@@ -26,15 +26,6 @@ import pytest
 from src.analysis_tools import NaiveBayesModel
 
 
-## ---------------------------------------------------------------------------
-## You can either:
-##   - Reuse the same DataFrames as in the store_raw_cv_scores tests
-##     (test_normal_df, test_edge_case_df, test_exception_case_df),
-##   - Or define similarly simple DataFrames here.
-##
-## Here we reuse the same structure as in the other test modules.
-## ---------------------------------------------------------------------------
-
 # Normal-case dataset: mixed BUSINESS_NAME strings and is_hotdog labels
 test_normal_df: pd.DataFrame = pd.DataFrame({
     "BUSINESS_NAME": [

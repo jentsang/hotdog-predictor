@@ -17,7 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 - Update variable names in the writing and fixed typos by @jentsang in https://github.com/jentsang/hotdog-predictor/pull/70 and https://github.com/jentsang/hotdog-predictor/issues/69
 - Update plots and table legends/captions in https://github.com/jentsang/hotdog-predictor/issues/71
 - Formating Methods section in https://github.com/jentsang/hotdog-predictor/issues/68
-- Shorten README repo structure section (peer review feedback) in https://github.com/jentsang/hotdog-predictor/issues/74
+- Shorten README repo structure section (peer review feedback) in https://github.com/jentsang/hotdog-predictor/issues/74 
 
 ### Removed
 

@@ -12,8 +12,8 @@ The data set used in this project is Street food vending created by the City of 
 
 The final report is available in the `reports/` folder:
 
-- HTML: [dog_or_not_report.html](reports/dog_or_not_report.html)  
-- PDF:  [dog_or_not_report.pdf](reports/dog_or_not_report.pdf)
+- HTML: [dog_or_not_report.html](https://github.com/jentsang/hotdog-predictor/blob/main/reports/dog_or_not_report.html)  
+- PDF:  [dog_or_not_report.pdf](https://github.com/jentsang/hotdog-predictor/blob/main/reports/dog_or_not_report.pdf)
 
 ## Dependencies
 
@@ -69,131 +69,44 @@ Then, in JupyterLab, open `notebooks/dog_or_not.ipynb` and run the cells in orde
 Next, under the "Kernel" menu click "Restart Kernel and Run All Cells...".
 
 
-## Running the scripts
+## Run locally with conda-lock
 
-The full workflow can be run from the command line using the scripts in the scripts/ directory.
-From the root of the repository, run the following commands in order (either in your local conda environment or inside the Docker container):
-
-Before anything, make sure you are in the root by performing:
+From the **repo root**, create and activate the environment from the lock file:
 
 ```bash
-pwd
+conda-lock install --name dsci522proj conda-lock.yml
+conda activate dsci522proj
 ```
 
-If you are not in the root, you will need to change the relative directory of the paths presented below.
+Then run the full workflow using the Makefile:
 
-1. Download the data:
-
-``` bash
-python scripts/download_data.py \
-  --source 'https://opendata.vancouver.ca/api/explore/v2.1/catalog/datasets/food-vendors/exports/csv?lang=en&timezone=America%2FLos_Angeles&use_labels=true&delimiter=%3B' \
-  --out-file data/raw/food_vendors_raw.csv
-
+```bash
+make clean
+make all
 ```
 
-2. Prepare/split the data
+> If you’re on Windows and `make` isn’t available, you’ll need to install it (or run the scripts manually—see the section below).
 
-``` bash
-python scripts/prepare_data.py \
-  --input-file data/raw/food_vendors_raw.csv \
-  --train-out data/processed/vendors_train.csv \
-  --test-out data/processed/vendors_test.csv \
-  --train-size 0.7 \
-  --seed 522
-```
 
-3. Exploratory Data Analysis (EDA)
+## Manual script execution (optional)
 
-``` bash
-python scripts/eda.py \
-  --training-data data/processed/vendors_train.csv \
-  --plot-to results/figures/EDA
-```
+If you want to run individual steps manually, the scripts live in `scripts/` and can be executed one-by-one (e.g., `download_data.py`, `prepare_data.py`, model scripts, etc.).  
+However, for grading/reproducibility, we recommend using the Makefile targets above.
 
-4. Dummy Baseline Model
-
-``` bash
-python scripts/dummy_analysis.py \
-  --training-data data/processed/vendors_train.csv \
-  --testing-data data/processed/vendors_test.csv \
-  --tables-to results/tables/ \
-  --seed 522
-```
-
-5. Decision Tree Model
-
-``` bash
-python scripts/decisiontree_analysis.py \
-  --training-data data/processed/vendors_train.csv \
-  --testing-data data/processed/vendors_test.csv \
-  --figures-to results/figures/ \
-  --tables-to results/tables/ \
-  --model-to results/models/ \
-  --seed 522
-```
-
-6. Logistic Regression Model
-
-``` bash
-python scripts/logistic_regression_analysis.py \
-  --training-data data/processed/vendors_train.csv \
-  --testing-data data/processed/vendors_test.csv \
-  --figures-to results/figures/ \
-  --tables-to results/tables/ \
-  --model-to results/models/ \
-  --seed 522
-```
-
-7. Bayesian Model
-
-``` bash
-python scripts/bayesian_analysis.py \
-  --training-data data/processed/vendors_train.csv \
-  --testing-data data/processed/vendors_test.csv \
-  --figures-to results/figures/ \
-  --tables-to results/tables/ \
-  --model-to results/models/ \
-  --seed 522
-```
-
-8. Compare models
-
-``` bash
-python scripts/compare_models.py \
-  --table-dir=results/tables \
-  --output-dir=results/tables \
-  --param=mean
-```
-
-9. Bayesian evaluation
-
-``` bash
-python scripts/bayesian_evaluation.py \
-  --training-data data/processed/vendors_train.csv \
-  --testing-data data/processed/vendors_test.csv \
-  --figures-to results/figures/ \
-  --tables-to results/tables/ \
-  --model-to results/models/ \
-  --seed 522
-```
+---
 
 ## Running tests
 
-After setting up the environment, you can run the unit tests from the root of the repository.
-
-To run the full test suite:
+After setting up the environment (either Docker or conda), run:
 
 ```bash
 pytest tests/
 ```
-To run a single test file, for example the tests for the Naive Bayes model
-evaluation methods:
+
+To run one test file:
 
 ```bash
 pytest tests/test_store_raw_cv_scores.py
-pytest tests/test_store_agg_cv_scores.py
-pytest tests/test_store_confusion_matrix.py
-pytest tests/test_store_model_mismatches.py
 ```
 
 ## License
@@ -204,13 +117,12 @@ The software code contained within this repository is licensed under the MIT Lic
 
 The Food Vendors dataset is provided by the City of Vancouver under the Open Government Licence – Vancouver. See the City of Vancouver open data licence page for details.
 
+
 ## References
 
 1. UBC Master of Data Science Program. *DSCI 531: Effective Use of Visual Channels* – Lecture 2: Bar chart syntax. 2025.  
 
 2. UBC Master of Data Science Program. *DSCI 531: Visualization for Communication* – Lecture 5: Axis label formatting. 2025.  
 
-3. W3Schools. “CSS Color Names.” W3Schools.com. https://www.w3schools.com/cssref/css_colors.php (accessed 21 November 2025).  
-
-4. City of Vancouver Open Data Portal. “Food Vendors” dataset. https://opendata.vancouver.ca/explore/dataset/food-vendors/table/ (accessed 21 November 2025).
+3. City of Vancouver Open Data Portal. “Food Vendors” dataset. https://opendata.vancouver.ca/explore/dataset/food-vendors/table/ (accessed 21 November 2025).
 
